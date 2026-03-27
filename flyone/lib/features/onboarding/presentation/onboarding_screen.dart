@@ -20,21 +20,39 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final _pages = const [
     OnboardingPage(
       title: 'Travel Made\nEffortless',
-      description: 'Book flights, trains, buses and boats all in one place. Your journey starts here.',
+      description:
+          'Book flights, trains, buses and boats all in one place. Your journey starts here.',
       icon: Icons.public_rounded,
       iconColor: AppColors.deepPurple,
+      orbitIcons: [
+        Icons.flight_takeoff_rounded,
+        Icons.directions_bus_rounded,
+        Icons.directions_boat_rounded,
+      ],
     ),
     OnboardingPage(
       title: 'AI-Powered\nPlanning',
-      description: 'Smart recommendations, price predictions, and route optimization powered by AI.',
+      description:
+          'Smart recommendations, price predictions, and route optimization powered by AI.',
       icon: Icons.auto_awesome_rounded,
       iconColor: AppColors.teal,
+      orbitIcons: [
+        Icons.insights_rounded,
+        Icons.route_rounded,
+        Icons.savings_rounded,
+      ],
     ),
     OnboardingPage(
       title: 'Digital Tickets\n& Tracking',
-      description: 'E-tickets with QR codes, real-time tracking, and instant notifications.',
+      description:
+          'E-tickets with QR codes, real-time tracking, and instant notifications.',
       icon: Icons.qr_code_scanner_rounded,
       iconColor: AppColors.deepPurple,
+      orbitIcons: [
+        Icons.notifications_active_rounded,
+        Icons.location_on_rounded,
+        Icons.confirmation_num_rounded,
+      ],
     ),
   ];
 
@@ -47,7 +65,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void _next() {
     if (_currentPage < _pages.length - 1) {
       _controller.nextPage(
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 350),
         curve: Curves.easeInOut,
       );
     } else {
@@ -55,61 +73,177 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     }
   }
 
+  bool get _isLastPage => _currentPage == _pages.length - 1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.softWhite,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: GestureDetector(
-                  onTap: () => context.go('/home'),
-                  child: Text('Skip', style: AppTypography.bodySmall.copyWith(color: AppColors.teal)),
-                ),
+      body: Stack(
+        children: [
+          // ── Background floating blobs ──────────────────────────────────
+          Positioned(
+            top: -60,
+            left: -40,
+            child: Container(
+              width: 220,
+              height: 220,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.lightLilac.withValues(alpha: 0.18),
               ),
             ),
-            Expanded(
-              child: PageView(
-                controller: _controller,
-                onPageChanged: (i) => setState(() => _currentPage = i),
-                children: _pages,
+          ),
+          Positioned(
+            top: 80,
+            right: -50,
+            child: Container(
+              width: 160,
+              height: 160,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.teal.withValues(alpha: 0.10),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(32),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      _pages.length,
-                      (i) => AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: _currentPage == i ? 24 : 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          color: _currentPage == i ? AppColors.deepPurple : AppColors.lightLilac,
-                          borderRadius: BorderRadius.circular(4),
+          ),
+          Positioned(
+            bottom: 120,
+            left: -30,
+            child: Container(
+              width: 130,
+              height: 130,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.teal.withValues(alpha: 0.08),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 60,
+            right: -20,
+            child: Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.lightLilac.withValues(alpha: 0.12),
+              ),
+            ),
+          ),
+
+          // ── Main content ───────────────────────────────────────────────
+          SafeArea(
+            child: Column(
+              children: [
+                // Skip button — 44x44 touch target
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8, right: 8),
+                    child: SizedBox(
+                      width: 44,
+                      height: 44,
+                      child: GestureDetector(
+                        onTap: () => context.go('/home'),
+                        behavior: HitTestBehavior.opaque,
+                        child: Center(
+                          child: Text(
+                            'Skip',
+                            style: AppTypography.bodySmall.copyWith(
+                              color: AppColors.teal,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 32),
-                  PillButton(
-                    label: _currentPage == _pages.length - 1 ? 'Get Started' : 'Next',
-                    onPressed: _next,
-                    width: double.infinity,
-                  ).animate().fadeIn(duration: 300.ms),
-                ],
-              ),
+                ),
+
+                // Page content with AnimatedSwitcher crossfade
+                Expanded(
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 350),
+                    switchInCurve: Curves.easeOut,
+                    switchOutCurve: Curves.easeIn,
+                    transitionBuilder: (child, animation) {
+                      return FadeTransition(opacity: animation, child: child);
+                    },
+                    child: PageView(
+                      key: ValueKey(_currentPage),
+                      controller: _controller,
+                      onPageChanged: (i) => setState(() => _currentPage = i),
+                      children: _pages,
+                    ),
+                  ),
+                ),
+
+                // Dots + CTA
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(32, 0, 32, 32),
+                  child: Column(
+                    children: [
+                      // Page indicator dots with active glow
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                          _pages.length,
+                          (i) {
+                            final isActive = _currentPage == i;
+                            return AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut,
+                              margin: const EdgeInsets.symmetric(horizontal: 4),
+                              width: isActive ? 24 : 8,
+                              height: 8,
+                              decoration: BoxDecoration(
+                                color: isActive
+                                    ? AppColors.deepPurple
+                                    : AppColors.lightLilac,
+                                borderRadius: BorderRadius.circular(4),
+                                boxShadow: isActive
+                                    ? [
+                                        BoxShadow(
+                                          color: AppColors.deepPurple
+                                              .withValues(alpha: 0.40),
+                                          blurRadius: 8,
+                                          spreadRadius: 1,
+                                          offset: const Offset(0, 2),
+                                        ),
+                                      ]
+                                    : null,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+
+                      // Get Started (gradient) on last page, Next (solid purple) otherwise
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 250),
+                        child: _isLastPage
+                            ? PillButton(
+                                key: const ValueKey('get_started'),
+                                label: 'Get Started',
+                                onPressed: _next,
+                                width: double.infinity,
+                                gradient: AppColors.primaryGradient,
+                              )
+                            : PillButton(
+                                key: const ValueKey('next'),
+                                label: 'Next',
+                                onPressed: _next,
+                                width: double.infinity,
+                              ),
+                      ).animate().fadeIn(duration: 300.ms),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
