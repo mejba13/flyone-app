@@ -14,12 +14,18 @@ class ToastNotification {
   }) {
     final overlay = Overlay.of(context);
     late OverlayEntry entry;
+    bool removed = false;
 
     entry = OverlayEntry(
       builder: (context) => _ToastWidget(
         message: message,
         type: type,
-        onDismiss: () => entry.remove(),
+        onDismiss: () {
+          if (!removed) {
+            removed = true;
+            entry.remove();
+          }
+        },
         duration: duration,
       ),
     );

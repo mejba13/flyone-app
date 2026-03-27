@@ -22,15 +22,17 @@ class _VoucherCarouselState extends State<VoucherCarousel> {
   void initState() {
     super.initState();
     _controller = PageController(viewportFraction: 0.85);
-    _autoScrollTimer = Timer.periodic(const Duration(seconds: 4), (_) {
-      if (!mounted) return;
-      _currentPage = (_currentPage + 1) % widget.vouchers.length;
-      _controller.animateToPage(
-        _currentPage,
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.easeInOut,
-      );
-    });
+    if (widget.vouchers.length > 1) {
+      _autoScrollTimer = Timer.periodic(const Duration(seconds: 4), (_) {
+        if (!mounted || widget.vouchers.isEmpty) return;
+        _currentPage = (_currentPage + 1) % widget.vouchers.length;
+        _controller.animateToPage(
+          _currentPage,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeInOut,
+        );
+      });
+    }
   }
 
   @override
@@ -46,6 +48,7 @@ class _VoucherCarouselState extends State<VoucherCarousel> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.vouchers.isEmpty) return const SizedBox.shrink();
     return Column(
       children: [
         SizedBox(

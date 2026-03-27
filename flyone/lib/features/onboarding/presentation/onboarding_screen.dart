@@ -162,19 +162,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
                 // Page content with AnimatedSwitcher crossfade
                 Expanded(
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 350),
-                    switchInCurve: Curves.easeOut,
-                    switchOutCurve: Curves.easeIn,
-                    transitionBuilder: (child, animation) {
-                      return FadeTransition(opacity: animation, child: child);
-                    },
-                    child: PageView(
-                      key: ValueKey(_currentPage),
-                      controller: _controller,
-                      onPageChanged: (i) => setState(() => _currentPage = i),
-                      children: _pages,
-                    ),
+                  child: PageView(
+                    controller: _controller,
+                    onPageChanged: (i) => setState(() => _currentPage = i),
+                    children: _pages,
                   ),
                 ),
 

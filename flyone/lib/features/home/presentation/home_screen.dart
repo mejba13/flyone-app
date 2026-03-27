@@ -139,7 +139,10 @@ class HomeScreen extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       itemCount: 2,
                       separatorBuilder: (_, __) => const SizedBox(width: 12),
-                      itemBuilder: (_, __) => const SkeletonCard(height: 200),
+                      itemBuilder: (_, __) => const SizedBox(
+                        width: 260,
+                        child: SkeletonCard(height: 200),
+                      ),
                     ),
                   ),
                   error: (e, _) => Padding(
