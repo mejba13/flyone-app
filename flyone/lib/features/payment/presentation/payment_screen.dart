@@ -7,6 +7,8 @@ import '../../../core/theme/app_typography.dart';
 import '../../../core/widgets/pill_button.dart';
 import '../../../core/widgets/toast_notification.dart';
 import '../domain/payment_provider.dart';
+import '../../booking/domain/booking_provider.dart';
+import '../../search/domain/search_provider.dart';
 import 'widgets/payment_method_card.dart';
 import 'widgets/wallet_balance.dart';
 import 'widgets/add_card_form.dart';
@@ -19,6 +21,12 @@ class PaymentScreen extends ConsumerWidget {
     final methods = ref.watch(paymentMethodsProvider);
     final selected = ref.watch(selectedPaymentMethodProvider);
     final balance = ref.watch(walletBalanceProvider);
+    final addons = ref.watch(addonsProvider);
+    final discount = ref.watch(promoDiscountProvider);
+    final selectedRoute = ref.watch(selectedResultProvider);
+    final basePrice = selectedRoute?.pricePerPax ?? 81.0;
+    final addonsTotal = addons.where((a) => a.isSelected).fold(0.0, (s, a) => s + a.price);
+    final total = basePrice + addonsTotal - discount;
 
     return Scaffold(
       backgroundColor: AppColors.softWhite,
@@ -126,9 +134,9 @@ class PaymentScreen extends ConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: 12),
-                  _SummaryRow('Subtotal', '\$81'),
-                  _SummaryRow('Add-ons', '\$25'),
-                  _SummaryRow('Discount', '-\$24', isDiscount: true),
+                  _SummaryRow('Subtotal', '\$${basePrice.toStringAsFixed(0)}'),
+                  _SummaryRow('Add-ons', '\$${addonsTotal.toStringAsFixed(0)}'),
+                  _SummaryRow('Discount', '-\$${discount.toStringAsFixed(0)}', isDiscount: true),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     child: _DashedLine(),
@@ -137,7 +145,7 @@ class PaymentScreen extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Total', style: AppTypography.heading3.copyWith(fontWeight: FontWeight.w700)),
-                      Text('\$82', style: AppTypography.heading1.copyWith(color: AppColors.deepPurple)),
+                      Text('\$${total.toStringAsFixed(0)}', style: AppTypography.heading1.copyWith(color: AppColors.deepPurple)),
                     ],
                   ),
                 ],
@@ -145,10 +153,10 @@ class PaymentScreen extends ConsumerWidget {
             ).animate().fadeIn(delay: 600.ms, duration: 300.ms),
             const SizedBox(height: 24),
             PillButton(
-              label: 'Pay \$82',
+              label: 'Pay \$${total.toStringAsFixed(0)}',
               onPressed: () {
                 ToastNotification.show(context, message: 'Payment successful!', type: ToastType.success);
-                context.push('/eticket');
+                context.go('/eticket');
               },
               width: double.infinity,
             ).animate().fadeIn(delay: 700.ms, duration: 300.ms),

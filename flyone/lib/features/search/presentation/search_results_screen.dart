@@ -196,7 +196,10 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen>
                           .read(favoritesProvider.notifier)
                           .toggle(data[index].id),
                       onBookmarkTap: () {},
-                      onTap: () => context.push('/booking-detail'),
+                      onTap: () {
+                        ref.read(selectedResultProvider.notifier).state = data[index];
+                        context.push('/booking-detail');
+                      },
                     )
                         .animate()
                         .fadeIn(

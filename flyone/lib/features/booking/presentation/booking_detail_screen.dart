@@ -7,6 +7,7 @@ import '../../../core/theme/app_typography.dart';
 import '../../../core/widgets/pill_button.dart';
 import '../../../core/widgets/toast_notification.dart';
 import '../domain/booking_provider.dart';
+import '../../search/domain/search_provider.dart';
 import 'widgets/passenger_form.dart';
 import 'widgets/seat_selection.dart';
 import 'widgets/addons_section.dart';
@@ -43,8 +44,16 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
     final repo = ref.read(bookingRepositoryProvider);
     final seatMap = repo.getSeatMap();
     final discount = ref.watch(promoDiscountProvider);
+    final selectedRoute = ref.watch(selectedResultProvider);
 
     final addonsTotal = addons.where((a) => a.isSelected).fold(0.0, (s, a) => s + a.price);
+
+    final departureCode = selectedRoute?.departureCode ?? 'JKT';
+    final arrivalCode = selectedRoute?.arrivalCode ?? 'BDG';
+    final departureTime = selectedRoute?.departureTime ?? '06:40';
+    final arrivalTime = selectedRoute?.arrivalTime ?? '08:30';
+    final routeDuration = selectedRoute?.duration ?? '1hr 50min';
+    final basePrice = selectedRoute?.pricePerPax ?? 81.0;
 
     return Scaffold(
       backgroundColor: AppColors.softWhite,
@@ -83,13 +92,13 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
                 children: [
                   Column(
                     children: [
-                      Text('JKT', style: AppTypography.heading1),
-                      Text('06:40', style: AppTypography.caption),
+                      Text(departureCode, style: AppTypography.heading1),
+                      Text(departureTime, style: AppTypography.caption),
                     ],
                   ),
                   Column(
                     children: [
-                      Text('1hr 50min', style: AppTypography.caption),
+                      Text(routeDuration, style: AppTypography.caption),
                       const SizedBox(height: 6),
                       Container(
                         padding: const EdgeInsets.all(8),
@@ -103,8 +112,8 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
                   ),
                   Column(
                     children: [
-                      Text('BDG', style: AppTypography.heading1),
-                      Text('08:30', style: AppTypography.caption),
+                      Text(arrivalCode, style: AppTypography.heading1),
+                      Text(arrivalTime, style: AppTypography.caption),
                     ],
                   ),
                 ],
@@ -158,7 +167,7 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
             _SectionDivider(label: 'Price Summary'),
             const SizedBox(height: 12),
             PriceBreakdown(
-              basePrice: 81,
+              basePrice: basePrice,
               addonsTotal: addonsTotal,
               discount: discount,
               passengers: 1,

@@ -11,6 +11,8 @@ final searchRepositoryProvider = Provider<SearchRepository>(
 
 final searchQueryProvider = StateProvider<SearchQuery?>((ref) => null);
 
+final selectedResultProvider = StateProvider<SearchResult?>((ref) => null);
+
 final searchResultsProvider = FutureProvider<List<SearchResult>>((ref) async {
   final query = ref.watch(searchQueryProvider);
   if (query == null) return [];

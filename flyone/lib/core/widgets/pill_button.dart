@@ -158,9 +158,10 @@ class _PillButtonState extends State<PillButton>
                 ],
                 Text(
                   widget.label,
-                  style: widget.isSmall
-                      ? AppTypography.buttonSmall
-                      : AppTypography.button,
+                  style: (widget.isSmall
+                          ? AppTypography.buttonSmall
+                          : AppTypography.button)
+                      .copyWith(color: widget.isOutlined ? bgColor : fgColor),
                 ),
               ],
             ),
