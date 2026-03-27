@@ -16,6 +16,13 @@ import 'widgets/voucher_carousel.dart';
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
+  String _greeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) return 'Good morning';
+    if (hour < 17) return 'Good afternoon';
+    return 'Good evening';
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final schedules = ref.watch(schedulesProvider);
@@ -44,18 +51,28 @@ class HomeScreen extends ConsumerWidget {
                     children: [
                       PointsBadge(points: points),
                       const Spacer(),
-                      _IconButton(icon: Icons.search_rounded, onTap: () => context.go('/search')),
-                      const SizedBox(width: 12),
+                      _TopIconButton(
+                        icon: Icons.search_rounded,
+                        onTap: () => context.go('/search'),
+                      ),
+                      const SizedBox(width: 10),
                       Stack(
                         children: [
-                          _IconButton(icon: Icons.notifications_outlined, onTap: () => context.push('/notifications')),
+                          _TopIconButton(
+                            icon: Icons.notifications_outlined,
+                            onTap: () => context.push('/notifications'),
+                          ),
                           Positioned(
-                            top: 8,
-                            right: 8,
+                            top: 7,
+                            right: 7,
                             child: Container(
-                              width: 8,
-                              height: 8,
-                              decoration: const BoxDecoration(color: AppColors.error, shape: BoxShape.circle),
+                              width: 10,
+                              height: 10,
+                              decoration: BoxDecoration(
+                                color: AppColors.error,
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Colors.white, width: 1.5),
+                              ),
                             ),
                           ),
                         ],
@@ -64,12 +81,25 @@ class HomeScreen extends ConsumerWidget {
                   ),
                 ).animate().fadeIn(duration: 300.ms),
 
-                const SizedBox(height: 24),
+                const SizedBox(height: 20),
 
-                // Hero text
+                // Greeting + Hero text
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text('Travel Made\nEffortless', style: AppTypography.heading1),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${_greeting()}, Mejba',
+                        style: AppTypography.bodySmall.copyWith(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text('Travel Made\nEffortless', style: AppTypography.heading1),
+                    ],
+                  ),
                 ).animate().fadeIn(duration: 400.ms).slideX(begin: -0.1, end: 0, duration: 400.ms),
 
                 const SizedBox(height: 24),
@@ -82,7 +112,7 @@ class HomeScreen extends ConsumerWidget {
                   ),
                 ).animate().fadeIn(delay: 200.ms, duration: 400.ms),
 
-                const SizedBox(height: 32),
+                const SizedBox(height: 28),
 
                 // Upcoming Schedules
                 SectionHeader(title: 'Upcoming Schedules', onViewAll: () {}),
@@ -118,7 +148,7 @@ class HomeScreen extends ConsumerWidget {
                   ),
                 ),
 
-                const SizedBox(height: 32),
+                const SizedBox(height: 28),
 
                 // Recommendations
                 SectionHeader(title: 'Recommendations', onViewAll: () {}),
@@ -168,7 +198,7 @@ class HomeScreen extends ConsumerWidget {
                   ),
                 ),
 
-                const SizedBox(height: 32),
+                const SizedBox(height: 28),
 
                 // Vouchers
                 SectionHeader(title: 'Vouchers', onViewAll: () {}),
@@ -192,27 +222,43 @@ class HomeScreen extends ConsumerWidget {
   }
 }
 
-class _IconButton extends StatelessWidget {
+class _TopIconButton extends StatefulWidget {
   final IconData icon;
   final VoidCallback onTap;
 
-  const _IconButton({required this.icon, required this.onTap});
+  const _TopIconButton({required this.icon, required this.onTap});
+
+  @override
+  State<_TopIconButton> createState() => _TopIconButtonState();
+}
+
+class _TopIconButtonState extends State<_TopIconButton> {
+  bool _pressed = false;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: const [
-            BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 1)),
-          ],
+      onTapDown: (_) => setState(() => _pressed = true),
+      onTapUp: (_) {
+        setState(() => _pressed = false);
+        widget.onTap();
+      },
+      onTapCancel: () => setState(() => _pressed = false),
+      child: AnimatedScale(
+        scale: _pressed ? 0.92 : 1.0,
+        duration: const Duration(milliseconds: 100),
+        child: Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: const [
+              BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 1)),
+            ],
+          ),
+          child: Icon(widget.icon, color: AppColors.deepPurple, size: 20),
         ),
-        child: Icon(icon, color: AppColors.deepPurple, size: 20),
       ),
     );
   }
