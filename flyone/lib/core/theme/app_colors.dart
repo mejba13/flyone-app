@@ -20,4 +20,28 @@ class AppColors {
   static const Color badgeBackground = lightLilac;
   static const Color shimmerBase = Color(0xFFE8E5F0);
   static const Color shimmerHighlight = Color(0xFFF3F0FA);
+
+  // Additional semantic
+  static const Color surfaceVariant = Color(0xFFF0EDFF);
+  static const Color onSurfaceVariant = Color(0xFF6B6B80);
+  static const Color shadowColor = Color(0x1A2D2654);
+
+  // Gradients
+  static const LinearGradient primaryGradient = LinearGradient(
+    colors: [lightLilac, teal],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
+  static const LinearGradient darkGradient = LinearGradient(
+    colors: [deepPurple, Color(0xFF4A3F7A)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
+  static const LinearGradient accentGradient = LinearGradient(
+    colors: [teal, Color(0xFF4DB8B8)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
 }

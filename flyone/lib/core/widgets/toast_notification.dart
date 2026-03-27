@@ -103,8 +103,13 @@ class _ToastWidgetState extends State<_ToastWidget> {
           ),
         )
             .animate()
-            .slideY(begin: -1, end: 0, duration: 300.ms, curve: Curves.easeOut)
-            .fadeIn(duration: 300.ms),
+            .slideY(
+              begin: -1.2,
+              end: 0,
+              duration: 400.ms,
+              curve: Curves.easeOutBack,
+            )
+            .fadeIn(duration: 250.ms),
       ),
     );
   }

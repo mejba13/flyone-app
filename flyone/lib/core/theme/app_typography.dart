@@ -52,4 +52,11 @@ class AppTypography {
         fontWeight: FontWeight.w500,
         color: Colors.white,
       );
+
+  static TextStyle get label => GoogleFonts.inter(
+        fontSize: 11,
+        fontWeight: FontWeight.w500,
+        color: AppColors.textSecondary,
+        letterSpacing: 0.5,
+      );
 }

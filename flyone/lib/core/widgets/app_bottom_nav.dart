@@ -17,9 +17,12 @@ class AppBottomNav extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
+        border: const Border(
+          top: BorderSide(color: AppColors.divider, width: 1),
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06),
+            color: AppColors.shadowColor,
             blurRadius: 20,
             offset: const Offset(0, -4),
           ),
@@ -33,24 +36,28 @@ class AppBottomNav extends StatelessWidget {
             children: [
               _NavItem(
                 icon: Icons.home_rounded,
+                activeIcon: Icons.home_filled,
                 label: 'Home',
                 isActive: currentIndex == 0,
                 onTap: () => onTap(0),
               ),
               _NavItem(
                 icon: Icons.search_rounded,
+                activeIcon: Icons.search_rounded,
                 label: 'Search',
                 isActive: currentIndex == 1,
                 onTap: () => onTap(1),
               ),
               _NavItem(
                 icon: Icons.calendar_today_rounded,
+                activeIcon: Icons.calendar_today_rounded,
                 label: 'Bookings',
                 isActive: currentIndex == 2,
                 onTap: () => onTap(2),
               ),
               _NavItem(
                 icon: Icons.person_rounded,
+                activeIcon: Icons.person_rounded,
                 label: 'Profile',
                 isActive: currentIndex == 3,
                 onTap: () => onTap(3),
@@ -65,12 +72,14 @@ class AppBottomNav extends StatelessWidget {
 
 class _NavItem extends StatelessWidget {
   final IconData icon;
+  final IconData activeIcon;
   final String label;
   final bool isActive;
   final VoidCallback onTap;
 
   const _NavItem({
     required this.icon,
+    required this.activeIcon,
     required this.label,
     required this.isActive,
     required this.onTap,
@@ -83,16 +92,19 @@ class _NavItem extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
+        constraints: const BoxConstraints(minHeight: 44, minWidth: 44),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isActive ? AppColors.lightLilac.withValues(alpha: 0.4) : Colors.transparent,
+          color: isActive
+              ? AppColors.lightLilac.withValues(alpha: 0.4)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
-              icon,
+              isActive ? activeIcon : icon,
               color: isActive ? AppColors.deepPurple : AppColors.textSecondary,
               size: 24,
             ),
@@ -100,7 +112,7 @@ class _NavItem extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 label,
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColors.deepPurple,
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
