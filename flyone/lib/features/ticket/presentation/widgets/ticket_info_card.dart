@@ -10,76 +10,94 @@ class TicketInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: const [
-          BoxShadow(color: Colors.black12, blurRadius: 12, offset: Offset(0, 4)),
-        ],
-      ),
-      child: Column(
-        children: [
-          // Trip type + carrier
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      children: [
+        // Trip type + carrier
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: AppColors.lightLilac.withValues(alpha: 0.4),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                ticket.tripType,
+                style: AppTypography.caption.copyWith(color: AppColors.deepPurple),
+              ),
+            ),
+            Text(ticket.carrierLogo, style: const TextStyle(fontSize: 24)),
+          ],
+        ),
+        const SizedBox(height: 20),
+        // Route
+        Row(
+          children: [
+            Expanded(
+              child: _RouteInfo(
+                code: ticket.departureCode,
+                time: ticket.departureTime,
+                label: 'From',
+              ),
+            ),
+            Column(
+              children: [
+                Text(ticket.duration, style: AppTypography.caption),
+                const SizedBox(height: 4),
+                const Icon(Icons.flight_rounded, color: AppColors.teal),
+              ],
+            ),
+            Expanded(
+              child: _RouteInfo(
+                code: ticket.arrivalCode,
+                time: ticket.arrivalTime,
+                label: 'To',
+                isEnd: true,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        // Date row
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [AppColors.surfaceVariant, Color(0xFFEBE8FF)],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: AppColors.lightLilac.withValues(alpha: 0.4),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  ticket.tripType,
-                  style: AppTypography.caption.copyWith(color: AppColors.deepPurple),
+              const Icon(Icons.calendar_today_rounded, size: 14, color: AppColors.deepPurple),
+              const SizedBox(width: 8),
+              Text(
+                ticket.date,
+                style: AppTypography.bodySmall.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
                 ),
               ),
-              Text(ticket.carrierLogo, style: const TextStyle(fontSize: 24)),
             ],
           ),
-          const SizedBox(height: 20),
-          // Route
-          Row(
-            children: [
-              Expanded(
-                child: _RouteInfo(
-                  code: ticket.departureCode,
-                  time: ticket.departureTime,
-                  label: 'From',
-                ),
-              ),
-              Column(
-                children: [
-                  Text(ticket.duration, style: AppTypography.caption),
-                  const SizedBox(height: 4),
-                  const Icon(Icons.flight_rounded, color: AppColors.teal),
-                ],
-              ),
-              Expanded(
-                child: _RouteInfo(
-                  code: ticket.arrivalCode,
-                  time: ticket.arrivalTime,
-                  label: 'To',
-                  isEnd: true,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          // Gate + Terminal + Seat
-          Row(
-            children: [
-              Expanded(child: _InfoBox(label: 'Gate', value: ticket.gate)),
-              const SizedBox(width: 12),
-              Expanded(child: _InfoBox(label: 'Terminal', value: ticket.terminal)),
-              const SizedBox(width: 12),
-              Expanded(child: _InfoBox(label: 'Seat', value: ticket.seatNumber)),
-            ],
-          ),
-        ],
-      ),
+        ),
+        const SizedBox(height: 14),
+        // Gate + Terminal + Seat
+        Row(
+          children: [
+            Expanded(child: _InfoBox(label: 'Gate', value: ticket.gate)),
+            const SizedBox(width: 10),
+            Expanded(child: _InfoBox(label: 'Terminal', value: ticket.terminal)),
+            const SizedBox(width: 10),
+            Expanded(child: _InfoBox(label: 'Seat', value: ticket.seatNumber)),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -119,16 +137,26 @@ class _InfoBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
       decoration: BoxDecoration(
-        color: AppColors.lightLilac.withValues(alpha: 0.2),
+        gradient: const LinearGradient(
+          colors: [AppColors.surfaceVariant, Color(0xFFECE9FF)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         children: [
           Text(label, style: AppTypography.caption),
           const SizedBox(height: 4),
-          Text(value, style: AppTypography.heading2),
+          Text(
+            value,
+            style: AppTypography.heading2.copyWith(
+              fontWeight: FontWeight.w800,
+              color: AppColors.deepPurple,
+            ),
+          ),
         ],
       ),
     );

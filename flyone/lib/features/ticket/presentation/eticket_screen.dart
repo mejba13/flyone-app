@@ -3,7 +3,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_typography.dart';
-import '../../../core/widgets/pill_button.dart';
 import '../data/mock_ticket_data.dart';
 import 'widgets/ticket_info_card.dart';
 import 'widgets/ticket_qr_code.dart';
@@ -32,50 +31,186 @@ class ETicketScreen extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            TicketInfoCard(ticket: ticket)
-                .animate()
-                .fadeIn(duration: 400.ms)
-                .slideY(begin: 0.1, end: 0, duration: 400.ms),
-            const SizedBox(height: 24),
-            // Passenger name
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-              ),
+            // Main ticket card with notch effect
+            _TicketCard(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Passenger Name', style: AppTypography.caption),
+                  TicketInfoCard(ticket: ticket)
+                      .animate()
+                      .fadeIn(duration: 400.ms)
+                      .slideY(begin: 0.1, end: 0, duration: 400.ms),
                   const SizedBox(height: 4),
-                  Text(ticket.passengerName, style: AppTypography.heading3),
+                  // Dashed tear line
+                  const _TicketTearLine(),
+                  const SizedBox(height: 12),
+                  // Passenger name section
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Passenger Name', style: AppTypography.caption),
+                              const SizedBox(height: 2),
+                              Text(ticket.passengerName, style: AppTypography.heading3),
+                            ],
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text('Travel Class', style: AppTypography.caption),
+                            const SizedBox(height: 2),
+                            Text(ticket.travelClass, style: AppTypography.bodySmall.copyWith(fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ).animate().fadeIn(delay: 200.ms, duration: 300.ms),
+                  const SizedBox(height: 12),
+                  // Dashed tear line before QR
+                  const _TicketTearLine(),
+                  const SizedBox(height: 16),
+                  TicketQrCode(data: ticket.pnr)
+                      .animate()
+                      .fadeIn(delay: 300.ms, duration: 400.ms)
+                      .scale(
+                        begin: const Offset(0.8, 0.8),
+                        end: const Offset(1, 1),
+                        delay: 300.ms,
+                        duration: 400.ms,
+                      ),
+                  const SizedBox(height: 16),
+                  // Dashed tear line before barcode
+                  const _TicketTearLine(),
+                  const SizedBox(height: 16),
+                  TicketBarcode(data: ticket.barcodeData)
+                      .animate()
+                      .fadeIn(delay: 400.ms, duration: 300.ms),
+                  const SizedBox(height: 16),
                 ],
               ),
-            ).animate().fadeIn(delay: 200.ms, duration: 300.ms),
-            const SizedBox(height: 24),
-            TicketQrCode(data: ticket.pnr)
-                .animate()
-                .fadeIn(delay: 300.ms, duration: 400.ms)
-                .scale(
-                  begin: const Offset(0.8, 0.8),
-                  end: const Offset(1, 1),
-                  delay: 300.ms,
-                  duration: 400.ms,
-                ),
-            const SizedBox(height: 24),
-            TicketBarcode(data: ticket.barcodeData)
-                .animate()
-                .fadeIn(delay: 400.ms, duration: 300.ms),
+            ),
             const SizedBox(height: 32),
-            PillButton(
-              label: 'Download Ticket',
-              onPressed: () {},
-              width: double.infinity,
-              backgroundColor: AppColors.teal,
-            ).animate().fadeIn(delay: 500.ms, duration: 300.ms),
+            // Gradient download button
+            _GradientDownloadButton()
+                .animate()
+                .fadeIn(delay: 500.ms, duration: 300.ms),
             const SizedBox(height: 32),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Ticket card with notch cutouts on left and right sides
+class _TicketCard extends StatelessWidget {
+  final Widget child;
+
+  const _TicketCard({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: _TicketNotchPainter(),
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: const [
+            BoxShadow(
+              color: AppColors.shadowColor,
+              blurRadius: 20,
+              offset: Offset(0, 6),
+            ),
+          ],
+        ),
+        child: child,
+      ),
+    );
+  }
+}
+
+class _TicketNotchPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = AppColors.softWhite
+      ..style = PaintingStyle.fill;
+
+    const notchRadius = 14.0;
+    // Position the notches roughly where the tear lines are (about 55% from top)
+    final notchY = size.height * 0.55;
+
+    // Left notch
+    canvas.drawCircle(Offset(0, notchY), notchRadius, paint);
+    // Right notch
+    canvas.drawCircle(Offset(size.width, notchY), notchRadius, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class _TicketTearLine extends StatelessWidget {
+  const _TicketTearLine();
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const dashWidth = 8.0;
+        const dashSpace = 5.0;
+        final count = (constraints.maxWidth / (dashWidth + dashSpace)).floor();
+        return Row(
+          children: List.generate(
+            count,
+            (_) => Container(
+              width: dashWidth,
+              height: 1.5,
+              margin: const EdgeInsets.only(right: dashSpace),
+              color: AppColors.divider,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _GradientDownloadButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {},
+      child: Container(
+        width: double.infinity,
+        height: 54,
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [AppColors.teal, Color(0xFF3AADAD)],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ),
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.teal.withValues(alpha: 0.35),
+              blurRadius: 14,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.download_rounded, color: Colors.white, size: 20),
+            const SizedBox(width: 8),
+            Text('Download Ticket', style: AppTypography.button),
           ],
         ),
       ),

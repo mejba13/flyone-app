@@ -21,7 +21,7 @@ class PriceBreakdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: AppColors.lightLilac.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(16),
@@ -32,18 +32,72 @@ class PriceBreakdown extends StatelessWidget {
           if (addonsTotal > 0) _Row('Add-ons', '\$${addonsTotal.toInt()}'),
           if (discount > 0) _Row('Discount', '-\$${discount.toInt()}', isDiscount: true),
           const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8),
-            child: Divider(color: AppColors.divider),
+            padding: EdgeInsets.symmetric(vertical: 12),
+            child: _DashedDivider(),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Total', style: AppTypography.heading3),
-              Text('\$${total.toInt()}', style: AppTypography.heading2.copyWith(color: AppColors.deepPurple)),
+              Row(
+                children: [
+                  Text('Total', style: AppTypography.heading3.copyWith(fontWeight: FontWeight.w700)),
+                  if (discount > 0) ...[
+                    const SizedBox(width: 10),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: AppColors.success.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(Icons.local_offer_rounded, size: 11, color: AppColors.success),
+                          const SizedBox(width: 3),
+                          Text(
+                            'You save \$${discount.toInt()}',
+                            style: AppTypography.caption.copyWith(
+                              color: AppColors.success,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+              Text(
+                '\$${total.toInt()}',
+                style: AppTypography.heading1.copyWith(color: AppColors.deepPurple),
+              ),
             ],
           ),
         ],
       ),
+    );
+  }
+}
+
+class _DashedDivider extends StatelessWidget {
+  const _DashedDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const dashWidth = 6.0;
+        const dashSpace = 4.0;
+        final count = (constraints.maxWidth / (dashWidth + dashSpace)).floor();
+        return Row(
+          children: List.generate(count, (_) => Container(
+            width: dashWidth,
+            height: 1,
+            margin: const EdgeInsets.only(right: dashSpace),
+            color: AppColors.divider,
+          )),
+        );
+      },
     );
   }
 }

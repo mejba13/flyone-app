@@ -35,14 +35,32 @@ class PaymentScreen extends ConsumerWidget {
             const SizedBox(height: 24),
             Text('Payment Methods', style: AppTypography.heading3),
             const SizedBox(height: 12),
-            ...methods.asMap().entries.map((entry) => Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: PaymentMethodCard(
-                method: entry.value,
-                isSelected: entry.value.id == selected,
-                onTap: () => ref.read(selectedPaymentMethodProvider.notifier).state = entry.value.id,
-              ).animate().fadeIn(delay: (100 * entry.key).ms, duration: 300.ms),
-            )),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.divider),
+              ),
+              child: Column(
+                children: methods.asMap().entries.map((entry) {
+                  final isLast = entry.key == methods.length - 1;
+                  return Column(
+                    children: [
+                      PaymentMethodCard(
+                        method: entry.value,
+                        isSelected: entry.value.id == selected,
+                        onTap: () => ref.read(selectedPaymentMethodProvider.notifier).state = entry.value.id,
+                      ).animate().fadeIn(delay: (100 * entry.key).ms, duration: 300.ms),
+                      if (!isLast)
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: Divider(height: 1, color: AppColors.divider),
+                        ),
+                    ],
+                  );
+                }).toList(),
+              ),
+            ),
             const SizedBox(height: 16),
             const AddCardForm().animate().fadeIn(delay: 400.ms, duration: 300.ms),
             const SizedBox(height: 16),
@@ -74,22 +92,52 @@ class PaymentScreen extends ConsumerWidget {
             const SizedBox(height: 24),
             // Order summary
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
-                color: AppColors.lightLilac.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(16),
+                gradient: const LinearGradient(
+                  colors: [AppColors.surfaceVariant, Color(0xFFE8E4FF)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(18),
+                boxShadow: const [
+                  BoxShadow(
+                    color: AppColors.shadowColor,
+                    blurRadius: 12,
+                    offset: Offset(0, 4),
+                  ),
+                ],
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.receipt_long_rounded, size: 16, color: AppColors.deepPurple),
+                      const SizedBox(width: 6),
+                      Text(
+                        'Order Summary',
+                        style: AppTypography.caption.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.deepPurple,
+                          letterSpacing: 0.4,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
                   _SummaryRow('Subtotal', '\$81'),
                   _SummaryRow('Add-ons', '\$25'),
                   _SummaryRow('Discount', '-\$24', isDiscount: true),
-                  const Divider(color: AppColors.divider),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: _DashedLine(),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Total', style: AppTypography.heading3),
-                      Text('\$82', style: AppTypography.heading2.copyWith(color: AppColors.deepPurple)),
+                      Text('Total', style: AppTypography.heading3.copyWith(fontWeight: FontWeight.w700)),
+                      Text('\$82', style: AppTypography.heading1.copyWith(color: AppColors.deepPurple)),
                     ],
                   ),
                 ],
@@ -108,6 +156,32 @@ class PaymentScreen extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _DashedLine extends StatelessWidget {
+  const _DashedLine();
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const dashWidth = 6.0;
+        const dashSpace = 4.0;
+        final count = (constraints.maxWidth / (dashWidth + dashSpace)).floor();
+        return Row(
+          children: List.generate(
+            count,
+            (_) => Container(
+              width: dashWidth,
+              height: 1,
+              margin: const EdgeInsets.only(right: dashSpace),
+              color: AppColors.divider,
+            ),
+          ),
+        );
+      },
     );
   }
 }

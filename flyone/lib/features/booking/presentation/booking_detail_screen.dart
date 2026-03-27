@@ -60,31 +60,50 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Route summary
+            // Route summary — gradient card
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               decoration: BoxDecoration(
-                color: AppColors.lightLilac.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(16),
+                gradient: const LinearGradient(
+                  colors: [AppColors.lightLilac, AppColors.surfaceVariant],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: const [
+                  BoxShadow(
+                    color: AppColors.shadowColor,
+                    blurRadius: 16,
+                    offset: Offset(0, 4),
+                  ),
+                ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     children: [
-                      Text('JKT', style: AppTypography.heading2),
+                      Text('JKT', style: AppTypography.heading1),
                       Text('06:40', style: AppTypography.caption),
                     ],
                   ),
                   Column(
                     children: [
                       Text('1hr 50min', style: AppTypography.caption),
-                      const Icon(Icons.flight_rounded, color: AppColors.teal),
+                      const SizedBox(height: 6),
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.7),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.flight_rounded, color: AppColors.teal, size: 22),
+                      ),
                     ],
                   ),
                   Column(
                     children: [
-                      Text('BDG', style: AppTypography.heading2),
+                      Text('BDG', style: AppTypography.heading1),
                       Text('08:30', style: AppTypography.caption),
                     ],
                   ),
@@ -92,27 +111,35 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
               ),
             ).animate().fadeIn(duration: 300.ms),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 28),
+            _SectionDivider(label: 'Passenger Details'),
+            const SizedBox(height: 12),
             PassengerForm(
               nameController: _nameController,
               emailController: _emailController,
               phoneController: _phoneController,
             ).animate().fadeIn(delay: 100.ms, duration: 300.ms),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 28),
+            _SectionDivider(label: 'Seat Selection'),
+            const SizedBox(height: 12),
             SeatSelection(
               seatMap: seatMap,
               selectedSeat: selectedSeat,
               onSeatSelected: (s) => ref.read(selectedSeatProvider.notifier).state = s,
             ).animate().fadeIn(delay: 200.ms, duration: 300.ms),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 28),
+            _SectionDivider(label: 'Add-ons'),
+            const SizedBox(height: 12),
             AddonsSection(
               addons: addons,
               onToggle: (id) => ref.read(addonsProvider.notifier).toggle(id),
             ).animate().fadeIn(delay: 300.ms, duration: 300.ms),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 28),
+            _SectionDivider(label: 'Promo Code'),
+            const SizedBox(height: 12),
             PromoCodeField(
               controller: _promoController,
               isApplied: _promoApplied,
@@ -127,7 +154,9 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
               },
             ).animate().fadeIn(delay: 400.ms, duration: 300.ms),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 28),
+            _SectionDivider(label: 'Price Summary'),
+            const SizedBox(height: 12),
             PriceBreakdown(
               basePrice: 81,
               addonsTotal: addonsTotal,
@@ -145,6 +174,43 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _SectionDivider extends StatelessWidget {
+  final String label;
+
+  const _SectionDivider({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            height: 1,
+            color: AppColors.divider,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Text(
+            label,
+            style: AppTypography.caption.copyWith(
+              fontWeight: FontWeight.w600,
+              color: AppColors.onSurfaceVariant,
+              letterSpacing: 0.5,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Container(
+            height: 1,
+            color: AppColors.divider,
+          ),
+        ),
+      ],
     );
   }
 }
