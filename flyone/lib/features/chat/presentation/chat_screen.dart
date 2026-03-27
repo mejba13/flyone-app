@@ -66,8 +66,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         title: Row(
           children: [
             Container(
-              width: 32,
-              height: 32,
+              width: 36,
+              height: 36,
               decoration: BoxDecoration(
                 color: AppColors.teal,
                 borderRadius: BorderRadius.circular(10),
@@ -75,25 +75,53 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               child: const Icon(Icons.auto_awesome, color: Colors.white, size: 18),
             ),
             const SizedBox(width: 10),
-            Text('AI Assistant', style: AppTypography.heading3),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('AI Assistant', style: AppTypography.heading3),
+                Row(
+                  children: [
+                    Container(
+                      width: 7,
+                      height: 7,
+                      decoration: const BoxDecoration(
+                        color: AppColors.success,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      'Online',
+                      style: AppTypography.caption.copyWith(
+                        color: AppColors.success,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ],
         ),
       ),
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              padding: const EdgeInsets.all(20),
-              itemCount: messages.length + (isTyping ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (index == messages.length && isTyping) return const TypingIndicator();
-                return ChatBubble(message: messages[index])
-                    .animate()
-                    .fadeIn(duration: 200.ms)
-                    .slideY(begin: 0.1, end: 0, duration: 200.ms);
-              },
-            ),
+            child: messages.isEmpty && !isTyping
+                ? _buildEmptyState()
+                : ListView.builder(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.all(20),
+                    itemCount: messages.length + (isTyping ? 1 : 0),
+                    itemBuilder: (context, index) {
+                      if (index == messages.length && isTyping) return const TypingIndicator();
+                      return ChatBubble(message: messages[index])
+                          .animate()
+                          .fadeIn(duration: 200.ms)
+                          .slideY(begin: 0.1, end: 0, duration: 200.ms);
+                    },
+                  ),
           ),
           // Quick replies
           if (lastAiMessage?.quickReplies != null && !isTyping)
@@ -124,6 +152,15 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             ),
             child: Row(
               children: [
+                // Attachment icon
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.attach_file_rounded, color: AppColors.textSecondary),
+                  tooltip: 'Attachment',
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                ),
+                const SizedBox(width: 4),
                 Expanded(
                   child: TextField(
                     controller: _controller,
@@ -141,7 +178,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     onSubmitted: _send,
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 4),
+                // Voice icon
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.mic_rounded, color: AppColors.textSecondary),
+                  tooltip: 'Voice',
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                ),
+                const SizedBox(width: 4),
                 GestureDetector(
                   onTap: () => _send(_controller.text),
                   child: Container(
@@ -158,6 +204,132 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyState() {
+    final prompts = [
+      ('Flight options', Icons.flight_rounded, 'Find me cheap flights to Dubai'),
+      ('Train schedules', Icons.train_rounded, 'When is the next Whoosh to Bandung?'),
+      ('Booking help', Icons.confirmation_number_rounded, 'How do I manage my booking?'),
+      ('Travel tips', Icons.tips_and_updates_rounded, 'Tips for traveling in Bali?'),
+    ];
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          const SizedBox(height: 20),
+          Container(
+            width: 64,
+            height: 64,
+            decoration: BoxDecoration(
+              color: AppColors.teal,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: const Icon(Icons.auto_awesome, color: Colors.white, size: 32),
+          ),
+          const SizedBox(height: 16),
+          Text('How can I help you?', style: AppTypography.heading2),
+          const SizedBox(height: 8),
+          Text(
+            'Ask me anything about flights, trains, bookings,\nor travel tips.',
+            style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 24),
+          Text(
+            'Suggested',
+            style: AppTypography.caption.copyWith(
+              color: AppColors.textSecondary,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.8,
+            ),
+          ),
+          const SizedBox(height: 12),
+          ...prompts.map(
+            (p) => _SuggestedPromptCard(
+              label: p.$1,
+              icon: p.$2,
+              subtitle: p.$3,
+              onTap: () => _send(p.$3),
+            ).animate().fadeIn(delay: (100 * prompts.indexOf(p)).ms),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SuggestedPromptCard extends StatefulWidget {
+  final String label;
+  final IconData icon;
+  final String subtitle;
+  final VoidCallback onTap;
+
+  const _SuggestedPromptCard({
+    required this.label,
+    required this.icon,
+    required this.subtitle,
+    required this.onTap,
+  });
+
+  @override
+  State<_SuggestedPromptCard> createState() => _SuggestedPromptCardState();
+}
+
+class _SuggestedPromptCardState extends State<_SuggestedPromptCard> {
+  bool _pressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _pressed = true),
+      onTapUp: (_) {
+        setState(() => _pressed = false);
+        widget.onTap();
+      },
+      onTapCancel: () => setState(() => _pressed = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 100),
+        margin: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: _pressed ? AppColors.surfaceVariant : Colors.white,
+          borderRadius: BorderRadius.circular(14),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.shadowColor,
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: AppColors.surfaceVariant,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(widget.icon, color: AppColors.deepPurple, size: 20),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(widget.label, style: AppTypography.bodySmall.copyWith(fontWeight: FontWeight.w600)),
+                  Text(widget.subtitle, style: AppTypography.caption.copyWith(color: AppColors.textSecondary)),
+                ],
+              ),
+            ),
+            const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: AppColors.textSecondary),
+          ],
+        ),
       ),
     );
   }

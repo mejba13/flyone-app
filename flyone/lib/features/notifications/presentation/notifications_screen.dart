@@ -32,6 +32,39 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen>
     super.dispose();
   }
 
+  int _unreadCount(List<AppNotification> notifications, NotificationCategory category) {
+    return notifications.where((n) => n.category == category && !n.isRead).length;
+  }
+
+  Widget _tabWithBadge(String label, int count) {
+    return Tab(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(label),
+          if (count > 0) ...[
+            const SizedBox(width: 6),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+              decoration: BoxDecoration(
+                color: AppColors.teal,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                '$count',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final notifications = ref.watch(notificationsProvider);
@@ -44,16 +77,38 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen>
           onPressed: () => context.pop(),
         ),
         title: const Text('Notifications'),
-        bottom: TabBar(
-          controller: _tabController,
-          labelColor: AppColors.deepPurple,
-          unselectedLabelColor: AppColors.textSecondary,
-          indicatorColor: AppColors.deepPurple,
-          tabs: const [
-            Tab(text: 'Bookings'),
-            Tab(text: 'Deals'),
-            Tab(text: 'System'),
-          ],
+        actions: [
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              'Mark all read',
+              style: AppTypography.caption.copyWith(color: AppColors.teal),
+            ),
+          ),
+        ],
+        bottom: notifications.maybeWhen(
+          data: (data) => TabBar(
+            controller: _tabController,
+            labelColor: AppColors.deepPurple,
+            unselectedLabelColor: AppColors.textSecondary,
+            indicatorColor: AppColors.deepPurple,
+            tabs: [
+              _tabWithBadge('Bookings', _unreadCount(data, NotificationCategory.booking)),
+              _tabWithBadge('Deals', _unreadCount(data, NotificationCategory.deal)),
+              _tabWithBadge('System', _unreadCount(data, NotificationCategory.system)),
+            ],
+          ),
+          orElse: () => TabBar(
+            controller: _tabController,
+            labelColor: AppColors.deepPurple,
+            unselectedLabelColor: AppColors.textSecondary,
+            indicatorColor: AppColors.deepPurple,
+            tabs: const [
+              Tab(text: 'Bookings'),
+              Tab(text: 'Deals'),
+              Tab(text: 'System'),
+            ],
+          ),
         ),
       ),
       body: TabBarView(
@@ -79,9 +134,41 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.notifications_off_rounded, size: 60, color: AppColors.lightLilac),
-                const SizedBox(height: 12),
-                Text('No notifications yet', style: AppTypography.bodySmall),
+                Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    color: AppColors.surfaceVariant,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.notifications_off_rounded,
+                    size: 40,
+                    color: AppColors.lightLilac,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'No notifications yet',
+                  style: AppTypography.heading3.copyWith(color: AppColors.textPrimary),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  "You're all caught up!\nWe'll notify you when something new arrives.",
+                  style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.deepPurple,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  ),
+                  child: const Text('Explore Deals'),
+                ),
               ],
             ),
           );
