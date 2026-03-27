@@ -45,6 +45,7 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen>
     // Fade list out, update state, fade back in
     await _listController.animateTo(0.0,
         duration: const Duration(milliseconds: 150), curve: Curves.easeOut);
+    if (!mounted) return;
     setState(() => _selectedFilter = filter);
     _listController.animateTo(1.0,
         duration: const Duration(milliseconds: 250), curve: Curves.easeIn);

@@ -158,7 +158,12 @@ class UpcomingScheduleCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      _PressableSeeDetails(onTap: onTap),
+                      PillButton(
+                        label: 'See Details',
+                        isSmall: true,
+                        isOutlined: true,
+                        onPressed: onTap,
+                      ),
                     ],
                   ),
                 ],
@@ -195,40 +200,6 @@ class _DashedLine extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class _PressableSeeDetails extends StatefulWidget {
-  final VoidCallback? onTap;
-  const _PressableSeeDetails({this.onTap});
-
-  @override
-  State<_PressableSeeDetails> createState() => _PressableSeeDetailsState();
-}
-
-class _PressableSeeDetailsState extends State<_PressableSeeDetails> {
-  bool _pressed = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (_) => setState(() => _pressed = true),
-      onTapUp: (_) {
-        setState(() => _pressed = false);
-        widget.onTap?.call();
-      },
-      onTapCancel: () => setState(() => _pressed = false),
-      child: AnimatedScale(
-        scale: _pressed ? 0.95 : 1.0,
-        duration: const Duration(milliseconds: 100),
-        child: PillButton(
-          label: 'See Details',
-          isSmall: true,
-          isOutlined: true,
-          onPressed: widget.onTap,
-        ),
-      ),
     );
   }
 }

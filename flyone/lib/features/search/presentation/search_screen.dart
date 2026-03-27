@@ -63,6 +63,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen>
   void _swapLocations() {
     // Trigger rotation then swap
     _swapController.forward(from: 0).then((_) {
+      if (!mounted) return;
       setState(() {
         final tempName = _from;
         final tempCode = _fromCode;

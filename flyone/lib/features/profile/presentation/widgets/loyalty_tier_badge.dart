@@ -75,36 +75,41 @@ class LoyaltyTierBadge extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               // Progress bar with milestone markers
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  // Progress bar background
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: LinearProgressIndicator(
-                      value: info.progressPercent,
-                      backgroundColor: Colors.white24,
-                      color: AppColors.teal,
-                      minHeight: 8,
-                    ),
-                  ),
-                  // Milestone dots at 25%, 50%, 75%
-                  for (final pct in [0.25, 0.50, 0.75])
-                    Positioned(
-                      left: (MediaQuery.of(context).size.width - 32 - 48) * pct - 4,
-                      top: -3,
-                      child: Container(
-                        width: 6,
-                        height: 14,
-                        decoration: BoxDecoration(
-                          color: info.progressPercent >= pct
-                              ? Colors.white
-                              : Colors.white38,
-                          borderRadius: BorderRadius.circular(3),
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final barWidth = constraints.maxWidth;
+                  return Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      // Progress bar background
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: LinearProgressIndicator(
+                          value: info.progressPercent,
+                          backgroundColor: Colors.white24,
+                          color: AppColors.teal,
+                          minHeight: 8,
                         ),
                       ),
-                    ),
-                ],
+                      // Milestone dots at 25%, 50%, 75%
+                      for (final pct in [0.25, 0.50, 0.75])
+                        Positioned(
+                          left: barWidth * pct - 3,
+                          top: -3,
+                          child: Container(
+                            width: 6,
+                            height: 14,
+                            decoration: BoxDecoration(
+                              color: info.progressPercent >= pct
+                                  ? Colors.white
+                                  : Colors.white38,
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                },
               ),
               const SizedBox(height: 8),
               Text(

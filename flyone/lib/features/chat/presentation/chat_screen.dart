@@ -108,7 +108,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       body: Column(
         children: [
           Expanded(
-            child: messages.isEmpty && !isTyping
+            child: messages.length <= 1 && !isTyping
                 ? _buildEmptyState()
                 : ListView.builder(
                     controller: _scrollController,

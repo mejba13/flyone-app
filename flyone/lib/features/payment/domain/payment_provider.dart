@@ -16,5 +16,5 @@ final paymentMethodsProvider = Provider<List<PaymentMethod>>((ref) => const [
 final selectedPaymentMethodProvider = StateProvider<String>((ref) => '1');
 
 final walletBalanceProvider = Provider<double>((ref) {
-  return ref.read(paymentRepositoryProvider).getWalletBalance();
+  return ref.watch(paymentRepositoryProvider).getWalletBalance();
 });

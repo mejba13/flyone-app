@@ -48,7 +48,7 @@ class FlyoneThemeExtension extends ThemeExtension<FlyoneThemeExtension> {
 
   @override
   FlyoneThemeExtension lerp(FlyoneThemeExtension? other, double t) {
-    if (other is! FlyoneThemeExtension) return this;
+    if (other == null) return this;
     return FlyoneThemeExtension(
       lightLilac: Color.lerp(lightLilac, other.lightLilac, t)!,
       deepPurple: Color.lerp(deepPurple, other.deepPurple, t)!,
