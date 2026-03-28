@@ -121,7 +121,7 @@ class _RouteInfo extends StatelessWidget {
       crossAxisAlignment: isEnd ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
         Text(label, style: AppTypography.caption),
-        Text(code, style: AppTypography.heading1),
+        Text(code, style: AppTypography.routeCode),
         Text(time, style: AppTypography.bodySmall),
       ],
     );

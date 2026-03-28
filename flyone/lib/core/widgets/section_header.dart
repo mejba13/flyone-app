@@ -28,7 +28,6 @@ class SectionHeader extends StatelessWidget {
                 'VIEW ALL',
                 style: AppTypography.label.copyWith(
                   color: AppColors.teal,
-                  letterSpacing: 0.8,
                 ),
               ),
             ),

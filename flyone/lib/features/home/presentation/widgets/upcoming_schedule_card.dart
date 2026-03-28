@@ -33,20 +33,26 @@ class UpcomingScheduleCard extends StatelessWidget {
             children: [
               TransportIcon(
                 mode: schedule.transportMode,
-                size: 18,
+                size: 16,
                 color: AppColors.deepPurple,
               ),
               const SizedBox(width: AppConstants.spaceSM),
               Expanded(
                 child: Text(
                   schedule.carrierName,
-                  style: AppTypography.bodySmall.copyWith(fontWeight: FontWeight.w600),
+                  style: AppTypography.overline.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w600,
+                  ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               Text(
                 schedule.date,
-                style: AppTypography.caption.copyWith(color: AppColors.teal),
+                style: AppTypography.caption.copyWith(
+                  color: AppColors.teal,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ],
           ),
@@ -56,15 +62,18 @@ class UpcomingScheduleCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(schedule.departureCode, style: AppTypography.heading3),
+                  Text(schedule.departureCode, style: AppTypography.routeCode),
+                  const SizedBox(height: 2),
                   Text(schedule.departureTime, style: AppTypography.caption),
                 ],
               ),
               Expanded(
                 child: Column(
                   children: [
-                    Text(schedule.duration, style: AppTypography.caption),
-                    const SizedBox(height: AppConstants.spaceXS),
+                    Text(schedule.duration, style: AppTypography.caption.copyWith(
+                      fontWeight: FontWeight.w500,
+                    )),
+                    const SizedBox(height: AppConstants.spaceSM),
                     _DashedLine(),
                   ],
                 ),
@@ -72,7 +81,8 @@ class UpcomingScheduleCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(schedule.arrivalCode, style: AppTypography.heading3),
+                  Text(schedule.arrivalCode, style: AppTypography.routeCode),
+                  const SizedBox(height: 2),
                   Text(schedule.arrivalTime, style: AppTypography.caption),
                 ],
               ),

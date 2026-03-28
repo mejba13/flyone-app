@@ -90,13 +90,14 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
                 children: [
                   Column(
                     children: [
-                      Text(departureCode, style: AppTypography.heading1),
+                      Text(departureCode, style: AppTypography.routeCode),
+                      const SizedBox(height: 2),
                       Text(departureTime, style: AppTypography.caption),
                     ],
                   ),
                   Column(
                     children: [
-                      Text(routeDuration, style: AppTypography.caption),
+                      Text(routeDuration, style: AppTypography.caption.copyWith(fontWeight: FontWeight.w500)),
                       const SizedBox(height: 6),
                       Container(
                         padding: const EdgeInsets.all(8),
@@ -110,7 +111,8 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
                   ),
                   Column(
                     children: [
-                      Text(arrivalCode, style: AppTypography.heading1),
+                      Text(arrivalCode, style: AppTypography.routeCode),
+                      const SizedBox(height: 2),
                       Text(arrivalTime, style: AppTypography.caption),
                     ],
                   ),

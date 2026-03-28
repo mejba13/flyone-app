@@ -107,7 +107,7 @@ class _RouteCardState extends State<RouteCard> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(widget.result.departureCode,
-                                      style: AppTypography.heading3),
+                                      style: AppTypography.routeCode.copyWith(fontSize: 18)),
                                   Text(widget.result.departureTime,
                                       style: AppTypography.caption),
                                 ],
@@ -171,7 +171,7 @@ class _RouteCardState extends State<RouteCard> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(widget.result.arrivalCode,
-                                      style: AppTypography.heading3),
+                                      style: AppTypography.routeCode.copyWith(fontSize: 18)),
                                   Text(widget.result.arrivalTime,
                                       style: AppTypography.caption),
                                 ],

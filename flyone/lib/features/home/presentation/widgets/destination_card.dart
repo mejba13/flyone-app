@@ -71,9 +71,9 @@ class DestinationCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         destination.name,
-                        style: AppTypography.bodySmall.copyWith(
+                        style: AppTypography.heading3.copyWith(
                           color: Colors.white,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -89,9 +89,9 @@ class DestinationCard extends StatelessWidget {
                       ),
                       child: Text(
                         destination.price,
-                        style: AppTypography.caption.copyWith(
+                        style: AppTypography.price.copyWith(
                           color: Colors.white,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
                         ),
                       ),
                     ),

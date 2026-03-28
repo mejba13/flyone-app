@@ -68,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     curve: Curves.easeOutBack,
                   ),
               const SizedBox(height: 24),
-              Text('FLYONE', style: AppTypography.heading1.copyWith(letterSpacing: 4))
+              Text('FLYONE', style: AppTypography.display.copyWith(letterSpacing: 6))
                   .animate()
                   .fadeIn(delay: 300.ms, duration: 600.ms)
                   .slideY(begin: 0.3, end: 0, delay: 300.ms, duration: 600.ms),

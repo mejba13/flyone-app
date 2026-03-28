@@ -64,9 +64,14 @@ class HomeScreen extends ConsumerWidget {
                           children: [
                             Text(
                               '${_greeting()}, Mejba',
-                              style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary),
+                              style: AppTypography.caption,
                             ),
-                            Text('Travel Made Effortless', style: AppTypography.heading3),
+                            const SizedBox(height: 2),
+                            Text('Travel Made Effortless',
+                              style: AppTypography.heading3.copyWith(
+                                height: 1.15,
+                              ),
+                            ),
                           ],
                         ),
                       ),

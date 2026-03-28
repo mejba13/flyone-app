@@ -138,10 +138,13 @@ class _CategoryItemState extends State<_CategoryItem>
                     ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               Text(
                 widget.label,
-                style: AppTypography.caption.copyWith(color: AppColors.textPrimary),
+                style: AppTypography.overline.copyWith(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w500,
+                ),
                 textAlign: TextAlign.center,
               ),
             ],
