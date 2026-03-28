@@ -59,58 +59,120 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen>
     );
   }
 
+  TabBar _buildTabBar(List<AppNotification>? data) {
+    if (data != null) {
+      return TabBar(
+        controller: _tabController,
+        labelColor: Colors.white,
+        unselectedLabelColor: Colors.white70,
+        indicatorColor: Colors.white,
+        tabs: [
+          _tabWithBadge('Bookings', _unreadCount(data, NotificationCategory.booking)),
+          _tabWithBadge('Deals', _unreadCount(data, NotificationCategory.deal)),
+          _tabWithBadge('System', _unreadCount(data, NotificationCategory.system)),
+        ],
+      );
+    }
+    return TabBar(
+      controller: _tabController,
+      labelColor: Colors.white,
+      unselectedLabelColor: Colors.white70,
+      indicatorColor: Colors.white,
+      tabs: const [
+        Tab(text: 'Bookings'),
+        Tab(text: 'Deals'),
+        Tab(text: 'System'),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final notifications = ref.watch(notificationsProvider);
 
     return Scaffold(
       backgroundColor: AppColors.softWhite,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
-        ),
-        title: const Text('Notifications'),
-        actions: [
-          TextButton(
-            onPressed: () {},
-            child: Text(
-              'Mark all read',
-              style: AppTypography.caption.copyWith(color: AppColors.teal),
+      body: Column(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [AppColors.deepPurple, Color(0xFF3D3470)],
+              ),
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(28)),
+            ),
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
+                child: Column(
+                  children: [
+                    // Title row
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () => context.pop(),
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.12),
+                              borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.15),
+                              ),
+                            ),
+                            child: const Icon(Icons.arrow_back, size: 20, color: Colors.white),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          'Notifications',
+                          style: AppTypography.heading1.copyWith(color: Colors.white),
+                        ),
+                        const Spacer(),
+                        GestureDetector(
+                          onTap: () {},
+                          child: Text(
+                            'Mark all read',
+                            style: AppTypography.caption.copyWith(color: AppColors.teal),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppConstants.spaceLG),
+                    // Tab bar
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.15),
+                        ),
+                      ),
+                      child: notifications.maybeWhen(
+                        data: (data) => _buildTabBar(data),
+                        orElse: () => _buildTabBar(null),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ).animate().fadeIn(duration: 500.ms).slideY(begin: -0.03, end: 0, duration: 500.ms, curve: Curves.easeOut),
+          // TabBarView below
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                _buildTab(notifications, NotificationCategory.booking),
+                _buildTab(notifications, NotificationCategory.deal),
+                _buildTab(notifications, NotificationCategory.system),
+              ],
             ),
           ),
-        ],
-        bottom: notifications.maybeWhen(
-          data: (data) => TabBar(
-            controller: _tabController,
-            labelColor: AppColors.deepPurple,
-            unselectedLabelColor: AppColors.textSecondary,
-            indicatorColor: AppColors.deepPurple,
-            tabs: [
-              _tabWithBadge('Bookings', _unreadCount(data, NotificationCategory.booking)),
-              _tabWithBadge('Deals', _unreadCount(data, NotificationCategory.deal)),
-              _tabWithBadge('System', _unreadCount(data, NotificationCategory.system)),
-            ],
-          ),
-          orElse: () => TabBar(
-            controller: _tabController,
-            labelColor: AppColors.deepPurple,
-            unselectedLabelColor: AppColors.textSecondary,
-            indicatorColor: AppColors.deepPurple,
-            tabs: const [
-              Tab(text: 'Bookings'),
-              Tab(text: 'Deals'),
-              Tab(text: 'System'),
-            ],
-          ),
-        ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _buildTab(notifications, NotificationCategory.booking),
-          _buildTab(notifications, NotificationCategory.deal),
-          _buildTab(notifications, NotificationCategory.system),
         ],
       ),
     );

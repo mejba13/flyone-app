@@ -39,9 +39,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen>
   late final AnimationController _swapController;
   late final Animation<double> _swapRotation;
 
-  // Back button scale animation
-  bool _backPressed = false;
-
   @override
   void initState() {
     super.initState();
@@ -98,13 +95,20 @@ class _SearchScreenState extends ConsumerState<SearchScreen>
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Header with elaborate illustration
+            // Header with gradient background and illustration
             Container(
               width: double.infinity,
               padding: const EdgeInsets.fromLTRB(20, 60, 20, 30),
               decoration: const BoxDecoration(
-                color: AppColors.surfaceVariant,
-                borderRadius: BorderRadius.vertical(bottom: Radius.circular(32)),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    AppColors.deepPurple,
+                    Color(0xFF3D3470),
+                  ],
+                ),
+                borderRadius: BorderRadius.vertical(bottom: Radius.circular(28)),
               ),
               child: Column(
                 children: [
@@ -112,52 +116,34 @@ class _SearchScreenState extends ConsumerState<SearchScreen>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Back button with scale press state
                       GestureDetector(
-                        onTapDown: (_) => setState(() => _backPressed = true),
-                        onTapUp: (_) {
-                          setState(() => _backPressed = false);
-                          context.go('/home');
-                        },
-                        onTapCancel: () => setState(() => _backPressed = false),
-                        child: AnimatedScale(
-                          scale: _backPressed ? 0.88 : 1.0,
-                          duration: const Duration(milliseconds: 120),
-                          child: Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColors.shadowColor,
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
+                        onTap: () => context.go('/home'),
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.12),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: Colors.white.withValues(alpha: 0.15),
                             ),
-                            child: const Icon(Icons.arrow_back,
-                                size: 20, color: AppColors.deepPurple),
                           ),
+                          child: const Icon(Icons.arrow_back,
+                              size: 20, color: Colors.white),
                         ),
                       ),
                       Container(
                         width: 40,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Colors.white.withValues(alpha: 0.12),
                           borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppColors.shadowColor,
-                              blurRadius: 8,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.15),
+                          ),
                         ),
                         child: const Icon(Icons.grid_view_rounded,
-                            size: 20, color: AppColors.deepPurple),
+                            size: 20, color: Colors.white),
                       ),
                     ],
                   ),
@@ -177,7 +163,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen>
                             height: 100,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: AppColors.lightLilac.withValues(alpha: 0.25),
+                              color: Colors.white.withValues(alpha: 0.08),
                             ),
                           ),
                         ),
@@ -189,7 +175,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen>
                             height: 60,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: AppColors.teal.withValues(alpha: 0.15),
+                              color: Colors.white.withValues(alpha: 0.06),
                             ),
                           ),
                         ),
@@ -197,15 +183,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen>
                           width: 80,
                           height: 80,
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: Colors.white.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
-                            boxShadow: AppConstants.shadowSubtle,
                           ),
-                          child: Center(
+                          child: const Center(
                             child: Icon(
                               Icons.train_rounded,
                               size: 40,
-                              color: AppColors.teal,
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -216,12 +201,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen>
                   const SizedBox(height: 18),
                   Text(
                     'Find Your\nBest Trip',
-                    style: AppTypography.heading2,
+                    style: AppTypography.heading2.copyWith(color: Colors.white),
                     textAlign: TextAlign.center,
                   ),
                 ],
               ),
-            ).animate().fadeIn(duration: 400.ms),
+            ).animate().fadeIn(duration: 500.ms).slideY(begin: -0.03, end: 0, duration: 500.ms, curve: Curves.easeOut),
 
             // Search form card
             Padding(
