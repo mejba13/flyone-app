@@ -19,17 +19,71 @@ class ETicketScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.softWhite,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
-        ),
-        actions: [
-          IconButton(icon: const Icon(Icons.share_rounded), onPressed: () {}),
-          IconButton(icon: const Icon(Icons.more_horiz_rounded), onPressed: () {}),
-        ],
-      ),
-      body: SingleChildScrollView(
+      body: Column(
+        children: [
+          // ── Gradient Header ──────────────
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [AppColors.deepPurple, Color(0xFF3D3470)],
+              ),
+            ),
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () => context.pop(),
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
+                        ),
+                        child: const Icon(Icons.arrow_back, size: 20, color: Colors.white),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text('E-Ticket', style: AppTypography.heading1.copyWith(color: Colors.white)),
+                    ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
+                        ),
+                        child: const Icon(Icons.share_rounded, size: 20, color: Colors.white),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
+                        ),
+                        child: const Icon(Icons.more_horiz_rounded, size: 20, color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
@@ -106,6 +160,9 @@ class ETicketScreen extends StatelessWidget {
             const SizedBox(height: AppConstants.bottomNavClearance),
           ],
         ),
+      ),
+          ),
+        ],
       ),
     );
   }

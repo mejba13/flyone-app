@@ -59,55 +59,74 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.softWhite,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
-        ),
-        title: Row(
-          children: [
-            Container(
-              width: 36,
-              height: 36,
-              decoration: BoxDecoration(
-                color: AppColors.teal,
-                borderRadius: BorderRadius.circular(10),
+      body: Column(
+        children: [
+          // ── Gradient Chat Header ──────────────
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [AppColors.deepPurple, Color(0xFF3D3470)],
               ),
-              child: const Icon(Icons.auto_awesome, color: Colors.white, size: 18),
             ),
-            const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('AI Assistant', style: AppTypography.heading3),
-                Row(
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
+                child: Row(
                   children: [
-                    Container(
-                      width: 7,
-                      height: 7,
-                      decoration: const BoxDecoration(
-                        color: AppColors.success,
-                        shape: BoxShape.circle,
+                    GestureDetector(
+                      onTap: () => context.pop(),
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
+                        ),
+                        child: const Icon(Icons.arrow_back, size: 20, color: Colors.white),
                       ),
                     ),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Online',
-                      style: AppTypography.caption.copyWith(
-                        color: AppColors.success,
-                        fontSize: 10,
+                    const SizedBox(width: 12),
+                    Container(
+                      width: 36,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        color: AppColors.teal,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(Icons.auto_awesome, color: Colors.white, size: 18),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text('AI Assistant', style: AppTypography.heading3.copyWith(color: Colors.white)),
+                          Row(
+                            children: [
+                              Container(
+                                width: 7,
+                                height: 7,
+                                decoration: const BoxDecoration(
+                                  color: AppColors.success,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              Text('Online', style: AppTypography.caption.copyWith(color: AppColors.success)),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
-          ],
-        ),
-      ),
-      body: Column(
-        children: [
+          ),
           Expanded(
             child: messages.length <= 1 && !isTyping
                 ? _buildEmptyState()

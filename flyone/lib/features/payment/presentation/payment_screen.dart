@@ -31,11 +31,44 @@ class PaymentScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.softWhite,
-      appBar: AppBar(
-        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => context.pop()),
-        title: const Text('Payment'),
-      ),
-      body: SingleChildScrollView(
+      body: Column(
+        children: [
+          // ── Gradient Header ──────────────
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [AppColors.deepPurple, Color(0xFF3D3470)],
+              ),
+            ),
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () => context.pop(),
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
+                        ),
+                        child: const Icon(Icons.arrow_back, size: 20, color: Colors.white),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Text('Payment', style: AppTypography.heading1.copyWith(color: Colors.white)),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,6 +187,9 @@ class PaymentScreen extends ConsumerWidget {
             const SizedBox(height: AppConstants.bottomNavClearance),
           ],
         ),
+      ),
+          ),
+        ],
       ),
     );
   }
