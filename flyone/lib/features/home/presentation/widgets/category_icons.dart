@@ -5,8 +5,9 @@ import '../../../../core/theme/app_constants.dart';
 
 class CategoryIcons extends StatelessWidget {
   final Function(String) onCategoryTap;
+  final bool isDarkBackground;
 
-  const CategoryIcons({super.key, required this.onCategoryTap});
+  const CategoryIcons({super.key, required this.onCategoryTap, this.isDarkBackground = false});
 
   @override
   Widget build(BuildContext context) {
@@ -18,21 +19,25 @@ class CategoryIcons extends StatelessWidget {
           label: 'Trains',
           badge: '20%',
           onTap: () => onCategoryTap('train'),
+          isDarkBackground: isDarkBackground,
         ),
         _CategoryItem(
           icon: Icons.flight_rounded,
           label: 'Flights',
           onTap: () => onCategoryTap('flight'),
+          isDarkBackground: isDarkBackground,
         ),
         _CategoryItem(
           icon: Icons.sailing_rounded,
           label: 'Boats',
           onTap: () => onCategoryTap('boat'),
+          isDarkBackground: isDarkBackground,
         ),
         _CategoryItem(
           icon: Icons.directions_bus_rounded,
           label: 'Bus',
           onTap: () => onCategoryTap('bus'),
+          isDarkBackground: isDarkBackground,
         ),
       ],
     );
@@ -44,12 +49,14 @@ class _CategoryItem extends StatefulWidget {
   final String label;
   final String? badge;
   final VoidCallback onTap;
+  final bool isDarkBackground;
 
   const _CategoryItem({
     required this.icon,
     required this.label,
     this.badge,
     required this.onTap,
+    required this.isDarkBackground,
   });
 
   @override
@@ -110,10 +117,17 @@ class _CategoryItemState extends State<_CategoryItem>
                     width: 52,
                     height: 52,
                     decoration: BoxDecoration(
-                      color: AppColors.surfaceVariant,
+                      color: widget.isDarkBackground
+                          ? Colors.white.withValues(alpha: 0.12)
+                          : AppColors.surfaceVariant,
                       borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+                      border: widget.isDarkBackground
+                          ? Border.all(color: Colors.white.withValues(alpha: 0.15), width: 1)
+                          : null,
                     ),
-                    child: Icon(widget.icon, color: AppColors.deepPurple, size: 24),
+                    child: Icon(widget.icon,
+                        color: widget.isDarkBackground ? Colors.white : AppColors.deepPurple,
+                        size: 24),
                   ),
                   if (widget.badge != null)
                     Positioned(
@@ -124,6 +138,9 @@ class _CategoryItemState extends State<_CategoryItem>
                         decoration: BoxDecoration(
                           color: AppColors.teal,
                           borderRadius: BorderRadius.circular(10),
+                          border: widget.isDarkBackground
+                              ? Border.all(color: AppColors.deepPurple, width: 1.5)
+                              : null,
                         ),
                         child: Text(
                           widget.badge!,
@@ -142,7 +159,9 @@ class _CategoryItemState extends State<_CategoryItem>
               Text(
                 widget.label,
                 style: AppTypography.overline.copyWith(
-                  color: AppColors.textPrimary,
+                  color: widget.isDarkBackground
+                      ? Colors.white.withValues(alpha: 0.9)
+                      : AppColors.textPrimary,
                   fontWeight: FontWeight.w500,
                 ),
                 textAlign: TextAlign.center,

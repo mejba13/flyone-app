@@ -40,7 +40,7 @@ class UpcomingScheduleCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   schedule.carrierName,
-                  style: AppTypography.overline.copyWith(
+                  style: AppTypography.bodySmall.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w600,
                   ),
@@ -56,7 +56,9 @@ class UpcomingScheduleCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: AppConstants.spaceLG),
+          const SizedBox(height: AppConstants.spaceMD),
+          Container(height: 1, color: AppColors.divider.withValues(alpha: 0.5)),
+          const SizedBox(height: AppConstants.spaceMD),
           Row(
             children: [
               Column(
