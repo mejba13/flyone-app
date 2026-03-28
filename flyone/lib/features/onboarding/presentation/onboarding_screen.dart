@@ -90,7 +90,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               height: 220,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.lightLilac.withValues(alpha: 0.18),
+                color: AppColors.lightLilac.withValues(alpha: 0.12),
               ),
             ),
           ),
@@ -102,31 +102,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               height: 160,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.teal.withValues(alpha: 0.10),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 120,
-            left: -30,
-            child: Container(
-              width: 130,
-              height: 130,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
                 color: AppColors.teal.withValues(alpha: 0.08),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 60,
-            right: -20,
-            child: Container(
-              width: 100,
-              height: 100,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.lightLilac.withValues(alpha: 0.12),
               ),
             ),
           ),
@@ -185,24 +161,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               duration: const Duration(milliseconds: 300),
                               curve: Curves.easeOut,
                               margin: const EdgeInsets.symmetric(horizontal: 4),
-                              width: isActive ? 24 : 8,
+                              width: isActive ? 20 : 8,
                               height: 8,
                               decoration: BoxDecoration(
                                 color: isActive
                                     ? AppColors.deepPurple
                                     : AppColors.lightLilac,
                                 borderRadius: BorderRadius.circular(4),
-                                boxShadow: isActive
-                                    ? [
-                                        BoxShadow(
-                                          color: AppColors.deepPurple
-                                              .withValues(alpha: 0.40),
-                                          blurRadius: 8,
-                                          spreadRadius: 1,
-                                          offset: const Offset(0, 2),
-                                        ),
-                                      ]
-                                    : null,
                               ),
                             );
                           },

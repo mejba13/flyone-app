@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_constants.dart';
 import '../../../core/theme/app_typography.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -47,27 +48,15 @@ class _SplashScreenState extends State<SplashScreen> {
               // Logo container with shadow + gradient background
               Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(28),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.lightLilac.withValues(alpha: 0.55),
-                      blurRadius: 32,
-                      spreadRadius: 4,
-                      offset: const Offset(0, 8),
-                    ),
-                    BoxShadow(
-                      color: AppColors.shadowColor,
-                      blurRadius: 16,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
+                  borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
+                  boxShadow: AppConstants.shadowElevated,
                 ),
                 child: Container(
                   width: 100,
                   height: 100,
                   decoration: BoxDecoration(
                     gradient: AppColors.primaryGradient,
-                    borderRadius: BorderRadius.circular(28),
+                    borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
                   ),
                   child: const Icon(
                     Icons.flight_takeoff_rounded,
