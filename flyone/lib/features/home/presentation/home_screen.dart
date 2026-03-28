@@ -4,10 +4,10 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_typography.dart';
+import '../../../core/theme/app_constants.dart';
 import '../../../core/widgets/section_header.dart';
 import '../../../core/widgets/skeleton_loader.dart';
 import '../domain/home_provider.dart';
-import 'widgets/points_badge.dart';
 import 'widgets/category_icons.dart';
 import 'widgets/upcoming_schedule_card.dart';
 import 'widgets/destination_card.dart';
@@ -28,7 +28,6 @@ class HomeScreen extends ConsumerWidget {
     final schedules = ref.watch(schedulesProvider);
     final destinations = ref.watch(destinationsProvider);
     final vouchers = ref.watch(vouchersProvider);
-    final points = ref.watch(userPointsProvider);
 
     return Scaffold(
       backgroundColor: AppColors.softWhite,
@@ -49,13 +48,33 @@ class HomeScreen extends ConsumerWidget {
                   padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
                   child: Row(
                     children: [
-                      PointsBadge(points: points),
-                      const Spacer(),
+                      Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: AppColors.lightLilac,
+                          borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
+                        ),
+                        child: const Icon(Icons.person_rounded, color: AppColors.deepPurple, size: 22),
+                      ),
+                      const SizedBox(width: AppConstants.spaceMD),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${_greeting()}, Mejba',
+                              style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary),
+                            ),
+                            Text('Travel Made Effortless', style: AppTypography.heading3),
+                          ],
+                        ),
+                      ),
                       _TopIconButton(
                         icon: Icons.search_rounded,
                         onTap: () => context.go('/search'),
                       ),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: AppConstants.spaceSM),
                       Stack(
                         children: [
                           _TopIconButton(
@@ -66,12 +85,11 @@ class HomeScreen extends ConsumerWidget {
                             top: 7,
                             right: 7,
                             child: Container(
-                              width: 10,
-                              height: 10,
-                              decoration: BoxDecoration(
+                              width: 8,
+                              height: 8,
+                              decoration: const BoxDecoration(
                                 color: AppColors.error,
                                 shape: BoxShape.circle,
-                                border: Border.all(color: Colors.white, width: 1.5),
                               ),
                             ),
                           ),
@@ -79,28 +97,7 @@ class HomeScreen extends ConsumerWidget {
                       ),
                     ],
                   ),
-                ).animate().fadeIn(duration: 300.ms),
-
-                const SizedBox(height: 20),
-
-                // Greeting + Hero text
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${_greeting()}, Mejba',
-                        style: AppTypography.bodySmall.copyWith(
-                          color: AppColors.textSecondary,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text('Travel Made\nEffortless', style: AppTypography.heading1),
-                    ],
-                  ),
-                ).animate().fadeIn(duration: 400.ms).slideX(begin: -0.1, end: 0, duration: 400.ms),
+                ).animate().fadeIn(duration: AppConstants.animNormal),
 
                 const SizedBox(height: 24),
 
@@ -128,8 +125,8 @@ class HomeScreen extends ConsumerWidget {
                       itemBuilder: (context, index) => UpcomingScheduleCard(
                         schedule: data[index],
                         onTap: () => context.push('/eticket'),
-                      ).animate().fadeIn(delay: (100 * index).ms, duration: 300.ms)
-                          .slideX(begin: 0.2, end: 0, delay: (100 * index).ms, duration: 300.ms),
+                      ).animate().fadeIn(delay: (80 * index).ms, duration: 300.ms)
+                          .slideX(begin: 0.2, end: 0, delay: (80 * index).ms, duration: 300.ms),
                     ),
                   ),
                   loading: () => SizedBox(
@@ -166,16 +163,16 @@ class HomeScreen extends ConsumerWidget {
                         crossAxisCount: 2,
                         mainAxisSpacing: 12,
                         crossAxisSpacing: 12,
-                        childAspectRatio: 1.3,
+                        childAspectRatio: 0.85,
                       ),
                       itemCount: data.length,
                       itemBuilder: (context, index) => DestinationCard(destination: data[index])
                           .animate()
-                          .fadeIn(delay: (100 * index).ms, duration: 300.ms)
+                          .fadeIn(delay: (80 * index).ms, duration: 300.ms)
                           .scale(
                             begin: const Offset(0.9, 0.9),
                             end: const Offset(1, 1),
-                            delay: (100 * index).ms,
+                            delay: (80 * index).ms,
                             duration: 300.ms,
                           ),
                     ),
@@ -189,7 +186,7 @@ class HomeScreen extends ConsumerWidget {
                         crossAxisCount: 2,
                         mainAxisSpacing: 12,
                         crossAxisSpacing: 12,
-                        childAspectRatio: 1.3,
+                        childAspectRatio: 0.85,
                       ),
                       itemCount: 4,
                       itemBuilder: (_, __) => const SkeletonCard(height: 140),
@@ -211,15 +208,21 @@ class HomeScreen extends ConsumerWidget {
                     .fadeIn(delay: 400.ms, duration: 400.ms),
 
                 const SizedBox(height: 32),
+                const SizedBox(height: 80),
               ],
             ),
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push('/chat'),
-        backgroundColor: AppColors.deepPurple,
-        child: const Icon(Icons.chat_rounded, color: Colors.white),
+      floatingActionButton: SizedBox(
+        width: 52,
+        height: 52,
+        child: FloatingActionButton(
+          onPressed: () => context.push('/chat'),
+          backgroundColor: AppColors.teal,
+          elevation: 2,
+          child: const Icon(Icons.chat_rounded, color: Colors.white, size: 22),
+        ),
       ),
     );
   }
@@ -255,10 +258,8 @@ class _TopIconButtonState extends State<_TopIconButton> {
           height: 44,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: const [
-              BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 1)),
-            ],
+            borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
+            boxShadow: AppConstants.shadowSubtle,
           ),
           child: Icon(widget.icon, color: AppColors.deepPurple, size: 20),
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
+import '../../../../core/theme/app_constants.dart';
 
 class CategoryIcons extends StatelessWidget {
   final Function(String) onCategoryTap;
@@ -70,7 +71,7 @@ class _CategoryItemState extends State<_CategoryItem>
       lowerBound: 0.0,
       upperBound: 1.0,
     );
-    _scale = Tween<double>(begin: 1.0, end: 0.95).animate(
+    _scale = Tween<double>(begin: 1.0, end: AppConstants.pressScale).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
   }
@@ -106,20 +107,13 @@ class _CategoryItemState extends State<_CategoryItem>
                 clipBehavior: Clip.none,
                 children: [
                   Container(
-                    width: 60,
-                    height: 60,
+                    width: 52,
+                    height: 52,
                     decoration: BoxDecoration(
-                      color: AppColors.lightLilac.withValues(alpha: 0.3),
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.lightLilac.withValues(alpha: 0.45),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
+                      color: AppColors.surfaceVariant,
+                      borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
                     ),
-                    child: Icon(widget.icon, color: AppColors.deepPurple, size: 28),
+                    child: Icon(widget.icon, color: AppColors.deepPurple, size: 24),
                   ),
                   if (widget.badge != null)
                     Positioned(
@@ -130,13 +124,6 @@ class _CategoryItemState extends State<_CategoryItem>
                         decoration: BoxDecoration(
                           color: AppColors.teal,
                           borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppColors.teal.withValues(alpha: 0.4),
-                              blurRadius: 6,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
                         ),
                         child: Text(
                           widget.badge!,

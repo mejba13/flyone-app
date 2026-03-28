@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
+import '../../../../core/theme/app_constants.dart';
 import '../../domain/models/voucher.dart';
 
 class VoucherCarousel extends StatefulWidget {
@@ -65,29 +66,12 @@ class _VoucherCarouselState extends State<VoucherCarousel> {
                 child: Container(
                   decoration: BoxDecoration(
                     color: bgColor,
-                    borderRadius: BorderRadius.circular(18),
-                    boxShadow: [
-                      BoxShadow(
-                        color: bgColor.withValues(alpha: 0.35),
-                        blurRadius: 14,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
+                    borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+                    boxShadow: AppConstants.shadowSubtle,
                   ),
                   clipBehavior: Clip.antiAlias,
                   child: Stack(
                     children: [
-                      // Decorative shape on the right
-                      Positioned(
-                        right: -20,
-                        top: -20,
-                        child: _DecorativeCircle(color: Colors.white.withValues(alpha: 0.12), size: 110),
-                      ),
-                      Positioned(
-                        right: 40,
-                        bottom: -30,
-                        child: _DecorativeCircle(color: Colors.white.withValues(alpha: 0.08), size: 80),
-                      ),
                       // Dashed separator line (vertical)
                       Positioned(
                         right: 90,
@@ -188,8 +172,8 @@ class _VoucherCarouselState extends State<VoucherCarousel> {
               return AnimatedContainer(
                 duration: const Duration(milliseconds: 250),
                 margin: const EdgeInsets.symmetric(horizontal: 3),
-                width: isActive ? 18 : 6,
-                height: 6,
+                width: isActive ? 20 : 6,
+                height: 5,
                 decoration: BoxDecoration(
                   color: isActive ? AppColors.deepPurple : AppColors.lightLilac,
                   borderRadius: BorderRadius.circular(3),
@@ -198,24 +182,6 @@ class _VoucherCarouselState extends State<VoucherCarousel> {
             }),
           ),
       ],
-    );
-  }
-}
-
-class _DecorativeCircle extends StatelessWidget {
-  final Color color;
-  final double size;
-  const _DecorativeCircle({required this.color, required this.size});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.circle,
-      ),
     );
   }
 }
