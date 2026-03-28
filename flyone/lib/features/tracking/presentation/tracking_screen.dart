@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_constants.dart';
 import '../../../core/theme/app_typography.dart';
 import '../domain/tracking_provider.dart';
 
@@ -86,18 +87,27 @@ class TrackingScreen extends ConsumerWidget {
             child: Container(
               width: double.infinity,
               padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-                boxShadow: [
-                  BoxShadow(color: Colors.black12, blurRadius: 12, offset: Offset(0, -4)),
-                ],
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                boxShadow: AppConstants.shadowSubtle,
               ),
               child: tracking.when(
                 data: (data) => SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Center(
+                        child: Container(
+                          width: 40,
+                          height: 4,
+                          margin: const EdgeInsets.only(bottom: 16),
+                          decoration: BoxDecoration(
+                            color: AppColors.divider,
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                        ),
+                      ),
                       // Vehicle info row
                       Row(
                         children: [
@@ -326,7 +336,7 @@ class _GridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = AppColors.lightLilac.withValues(alpha: 0.3)
+      ..color = AppColors.lightLilac.withValues(alpha: 0.15)
       ..strokeWidth = 0.8;
 
     const spacing = 28.0;

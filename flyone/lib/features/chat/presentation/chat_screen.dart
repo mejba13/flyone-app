@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_constants.dart';
 import '../../../core/theme/app_typography.dart';
 import '../domain/chat_provider.dart';
 import 'widgets/chat_bubble.dart';
@@ -133,74 +134,68 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               ),
             ),
           // Input bar
-          Container(
-            padding: EdgeInsets.fromLTRB(
-              16,
-              12,
-              16,
-              MediaQuery.of(context).padding.bottom + 12,
-            ),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, -2),
-                ),
-              ],
-            ),
-            child: Row(
-              children: [
-                // Attachment icon
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.attach_file_rounded, color: AppColors.textSecondary),
-                  tooltip: 'Attachment',
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-                ),
-                const SizedBox(width: 4),
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      hintText: 'Ask me anything about travel...',
-                      hintStyle: AppTypography.bodySmall,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24),
-                        borderSide: BorderSide.none,
+          Padding(
+            padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 12),
+            child: Container(
+              margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
+                boxShadow: AppConstants.shadowSubtle,
+              ),
+              child: Row(
+                children: [
+                  // Attachment icon
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.attach_file_rounded, color: AppColors.textSecondary),
+                    tooltip: 'Attachment',
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                  ),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: TextField(
+                      controller: _controller,
+                      decoration: InputDecoration(
+                        hintText: 'Ask me anything about travel...',
+                        hintStyle: AppTypography.bodySmall,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: AppColors.softWhite,
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       ),
-                      filled: true,
-                      fillColor: AppColors.softWhite,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      onSubmitted: _send,
                     ),
-                    onSubmitted: _send,
                   ),
-                ),
-                const SizedBox(width: 4),
-                // Voice icon
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.mic_rounded, color: AppColors.textSecondary),
-                  tooltip: 'Voice',
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-                ),
-                const SizedBox(width: 4),
-                GestureDetector(
-                  onTap: () => _send(_controller.text),
-                  child: Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      color: AppColors.deepPurple,
-                      borderRadius: BorderRadius.circular(12),
+                  const SizedBox(width: 4),
+                  // Voice icon
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.mic_rounded, color: AppColors.textSecondary),
+                    tooltip: 'Voice',
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                  ),
+                  const SizedBox(width: 4),
+                  GestureDetector(
+                    onTap: () => _send(_controller.text),
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: const BoxDecoration(
+                        color: AppColors.teal,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.send_rounded, color: Colors.white, size: 18),
                     ),
-                    child: const Icon(Icons.send_rounded, color: Colors.white, size: 20),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
@@ -297,14 +292,8 @@ class _SuggestedPromptCardState extends State<_SuggestedPromptCard> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: _pressed ? AppColors.surfaceVariant : Colors.white,
-          borderRadius: BorderRadius.circular(14),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.shadowColor,
-              blurRadius: 6,
-              offset: const Offset(0, 2),
-            ),
-          ],
+          borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+          boxShadow: AppConstants.shadowSubtle,
         ),
         child: Row(
           children: [
