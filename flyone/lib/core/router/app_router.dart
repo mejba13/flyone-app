@@ -12,6 +12,7 @@ import '../../features/payment/presentation/payment_screen.dart';
 import '../../features/ticket/presentation/eticket_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/notifications/presentation/notifications_screen.dart';
+import '../../features/bookings/presentation/bookings_screen.dart';
 import '../../features/chat/presentation/chat_screen.dart';
 import '../../features/tracking/presentation/tracking_screen.dart';
 
@@ -71,10 +72,8 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
           GoRoute(
             path: '/bookings',
-            pageBuilder: (context, state) => NoTransitionPage(
-              child: Scaffold(
-                body: Center(child: Text('My Bookings')),
-              ),
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: BookingsScreen(),
             ),
           ),
           GoRoute(
