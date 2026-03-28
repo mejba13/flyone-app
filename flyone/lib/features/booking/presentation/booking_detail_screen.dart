@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_typography.dart';
+import '../../../core/theme/app_constants.dart';
 import '../../../core/widgets/pill_button.dart';
 import '../../../core/widgets/toast_notification.dart';
 import '../domain/booking_provider.dart';
@@ -69,23 +70,20 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Route summary — gradient card
+            // Route summary — softened gradient card
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [AppColors.lightLilac, AppColors.surfaceVariant],
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.lightLilac.withValues(alpha: 0.7),
+                    AppColors.surfaceVariant.withValues(alpha: 0.7),
+                  ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: const [
-                  BoxShadow(
-                    color: AppColors.shadowColor,
-                    blurRadius: 16,
-                    offset: Offset(0, 4),
-                  ),
-                ],
+                borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+                boxShadow: AppConstants.shadowSubtle,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -120,35 +118,55 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
               ),
             ).animate().fadeIn(duration: 300.ms),
 
-            const SizedBox(height: 28),
-            _SectionDivider(label: 'Passenger Details'),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppConstants.spaceXXL),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text('PASSENGER DETAILS', style: AppTypography.label.copyWith(
+                color: AppColors.textSecondary,
+              )),
+            ),
+            const SizedBox(height: AppConstants.spaceLG),
             PassengerForm(
               nameController: _nameController,
               emailController: _emailController,
               phoneController: _phoneController,
-            ).animate().fadeIn(delay: 100.ms, duration: 300.ms),
+            ).animate().fadeIn(delay: 80.ms, duration: 300.ms),
 
-            const SizedBox(height: 28),
-            _SectionDivider(label: 'Seat Selection'),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppConstants.spaceXXL),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text('SEAT SELECTION', style: AppTypography.label.copyWith(
+                color: AppColors.textSecondary,
+              )),
+            ),
+            const SizedBox(height: AppConstants.spaceLG),
             SeatSelection(
               seatMap: seatMap,
               selectedSeat: selectedSeat,
               onSeatSelected: (s) => ref.read(selectedSeatProvider.notifier).state = s,
-            ).animate().fadeIn(delay: 200.ms, duration: 300.ms),
+            ).animate().fadeIn(delay: 80.ms, duration: 300.ms),
 
-            const SizedBox(height: 28),
-            _SectionDivider(label: 'Add-ons'),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppConstants.spaceXXL),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text('ADD-ONS', style: AppTypography.label.copyWith(
+                color: AppColors.textSecondary,
+              )),
+            ),
+            const SizedBox(height: AppConstants.spaceLG),
             AddonsSection(
               addons: addons,
               onToggle: (id) => ref.read(addonsProvider.notifier).toggle(id),
-            ).animate().fadeIn(delay: 300.ms, duration: 300.ms),
+            ).animate().fadeIn(delay: 80.ms, duration: 300.ms),
 
-            const SizedBox(height: 28),
-            _SectionDivider(label: 'Promo Code'),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppConstants.spaceXXL),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text('PROMO CODE', style: AppTypography.label.copyWith(
+                color: AppColors.textSecondary,
+              )),
+            ),
+            const SizedBox(height: AppConstants.spaceLG),
             PromoCodeField(
               controller: _promoController,
               isApplied: _promoApplied,
@@ -161,65 +179,33 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
                   ToastNotification.show(context, message: 'Invalid promo code', type: ToastType.error);
                 }
               },
-            ).animate().fadeIn(delay: 400.ms, duration: 300.ms),
+            ).animate().fadeIn(delay: 80.ms, duration: 300.ms),
 
-            const SizedBox(height: 28),
-            _SectionDivider(label: 'Price Summary'),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppConstants.spaceXXL),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text('PRICE SUMMARY', style: AppTypography.label.copyWith(
+                color: AppColors.textSecondary,
+              )),
+            ),
+            const SizedBox(height: AppConstants.spaceLG),
             PriceBreakdown(
               basePrice: basePrice,
               addonsTotal: addonsTotal,
               discount: discount,
               passengers: 1,
-            ).animate().fadeIn(delay: 500.ms, duration: 300.ms),
+            ).animate().fadeIn(delay: 80.ms, duration: 300.ms),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: AppConstants.spaceXXL),
             PillButton(
               label: 'Continue to Payment',
               onPressed: () => context.push('/payment'),
               width: double.infinity,
-            ).animate().fadeIn(delay: 600.ms, duration: 300.ms),
-            const SizedBox(height: 32),
+            ).animate().fadeIn(delay: 80.ms, duration: 300.ms),
+            const SizedBox(height: 80),
           ],
         ),
       ),
-    );
-  }
-}
-
-class _SectionDivider extends StatelessWidget {
-  final String label;
-
-  const _SectionDivider({required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            height: 1,
-            color: AppColors.divider,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Text(
-            label,
-            style: AppTypography.caption.copyWith(
-              fontWeight: FontWeight.w600,
-              color: AppColors.onSurfaceVariant,
-              letterSpacing: 0.5,
-            ),
-          ),
-        ),
-        Expanded(
-          child: Container(
-            height: 1,
-            color: AppColors.divider,
-          ),
-        ),
-      ],
     );
   }
 }

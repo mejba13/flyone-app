@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_typography.dart';
+import '../../../core/theme/app_constants.dart';
 import '../../../core/widgets/pill_button.dart';
 import '../../../core/widgets/toast_notification.dart';
 import '../domain/payment_provider.dart';
@@ -102,19 +103,9 @@ class PaymentScreen extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [AppColors.surfaceVariant, Color(0xFFE8E4FF)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(18),
-                boxShadow: const [
-                  BoxShadow(
-                    color: AppColors.shadowColor,
-                    blurRadius: 12,
-                    offset: Offset(0, 4),
-                  ),
-                ],
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+                boxShadow: AppConstants.shadowSubtle,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -145,7 +136,7 @@ class PaymentScreen extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Total', style: AppTypography.heading3.copyWith(fontWeight: FontWeight.w700)),
-                      Text('\$${total.toStringAsFixed(0)}', style: AppTypography.heading1.copyWith(color: AppColors.deepPurple)),
+                      Text('\$${total.toStringAsFixed(0)}', style: AppTypography.heading2.copyWith(color: AppColors.deepPurple)),
                     ],
                   ),
                 ],
@@ -160,7 +151,7 @@ class PaymentScreen extends ConsumerWidget {
               },
               width: double.infinity,
             ).animate().fadeIn(delay: 700.ms, duration: 300.ms),
-            const SizedBox(height: 32),
+            const SizedBox(height: 80),
           ],
         ),
       ),
