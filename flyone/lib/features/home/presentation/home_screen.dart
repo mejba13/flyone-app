@@ -73,14 +73,30 @@ class HomeScreen extends ConsumerWidget {
                               width: 44,
                               height: 44,
                               decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.15),
-                                borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
+                                shape: BoxShape.circle,
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    AppColors.teal,
+                                    AppColors.teal.withValues(alpha: 0.7),
+                                  ],
+                                ),
                                 border: Border.all(
-                                  color: Colors.white.withValues(alpha: 0.25),
-                                  width: 1,
+                                  color: Colors.white.withValues(alpha: 0.3),
+                                  width: 2,
                                 ),
                               ),
-                              child: const Icon(Icons.person_rounded, color: Colors.white, size: 22),
+                              child: Center(
+                                child: Text(
+                                  'MA',
+                                  style: AppTypography.overline.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
                             ),
                             const SizedBox(width: AppConstants.spaceMD),
                             Expanded(
