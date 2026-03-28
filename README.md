@@ -26,6 +26,9 @@ Flyone is a premium, AI-powered travel booking mobile app that aggregates flight
 
 **Current Stage:** Frontend prototype with complete UI, mock data, and animations. Backend integration planned.
 
+<img width="1892" height="1220" alt="CleanShot 2026-03-28 at 3  49 37" src="https://github.com/user-attachments/assets/a00eaf72-10a7-4b71-a6a4-be270c4fe385" />
+
+
 ---
 
 ## Features
