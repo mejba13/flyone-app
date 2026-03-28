@@ -39,55 +39,83 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen>
 
     return Scaffold(
       backgroundColor: AppColors.softWhite,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-              child: Text('My Bookings', style: AppTypography.heading1),
-            ),
-            const SizedBox(height: AppConstants.spaceLG),
-            // Tab bar
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              decoration: BoxDecoration(
-                color: AppColors.surfaceVariant,
-                borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // ── Gradient Header ──────────────
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  AppColors.deepPurple,
+                  Color(0xFF3D3470),
+                ],
               ),
-              child: TabBar(
-                controller: _tabController,
-                labelColor: Colors.white,
-                unselectedLabelColor: AppColors.textSecondary,
-                labelStyle: AppTypography.overline.copyWith(fontWeight: FontWeight.w600),
-                unselectedLabelStyle: AppTypography.overline,
-                indicator: BoxDecoration(
-                  color: AppColors.deepPurple,
-                  borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(28),
+              ),
+            ),
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('My Bookings', style: AppTypography.heading1.copyWith(color: Colors.white)),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Manage your trips and travel history',
+                      style: AppTypography.bodySmall.copyWith(color: Colors.white.withValues(alpha: 0.7)),
+                    ),
+                    const SizedBox(height: AppConstants.spaceLG),
+                    // Tab bar inside header
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
+                        border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+                      ),
+                      child: TabBar(
+                        controller: _tabController,
+                        labelColor: AppColors.deepPurple,
+                        unselectedLabelColor: Colors.white.withValues(alpha: 0.7),
+                        labelStyle: AppTypography.overline.copyWith(fontWeight: FontWeight.w600),
+                        unselectedLabelStyle: AppTypography.overline,
+                        indicator: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
+                        ),
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        dividerHeight: 0,
+                        tabs: const [
+                          Tab(text: 'Upcoming'),
+                          Tab(text: 'Completed'),
+                          Tab(text: 'Cancelled'),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                indicatorSize: TabBarIndicatorSize.tab,
-                dividerHeight: 0,
-                tabs: const [
-                  Tab(text: 'Upcoming'),
-                  Tab(text: 'Completed'),
-                  Tab(text: 'Cancelled'),
-                ],
               ),
             ),
-            const SizedBox(height: AppConstants.spaceLG),
-            // Content
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  _buildBookingsList(bookings, BookingStatus.upcoming),
-                  _buildBookingsList(bookings, BookingStatus.completed),
-                  _buildBookingsList(bookings, BookingStatus.cancelled),
-                ],
-              ),
+          ).animate().fadeIn(duration: 500.ms).slideY(begin: -0.03, end: 0, duration: 500.ms, curve: Curves.easeOut),
+
+          const SizedBox(height: AppConstants.spaceLG),
+          // Content
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                _buildBookingsList(bookings, BookingStatus.upcoming),
+                _buildBookingsList(bookings, BookingStatus.completed),
+                _buildBookingsList(bookings, BookingStatus.cancelled),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -335,7 +363,13 @@ class _BookingCardState extends State<_BookingCard> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('PNR', style: AppTypography.label.copyWith(color: AppColors.textSecondary)),
+                        Row(
+                          children: [
+                            Icon(Icons.confirmation_number_outlined, size: 12, color: AppColors.textSecondary),
+                            const SizedBox(width: 4),
+                            Text('PNR', style: AppTypography.label.copyWith(color: AppColors.textSecondary)),
+                          ],
+                        ),
                         const SizedBox(height: 2),
                         Text(
                           widget.booking.pnr,
@@ -353,6 +387,16 @@ class _BookingCardState extends State<_BookingCard> {
                     ),
                   ],
                 ),
+              ),
+              const SizedBox(height: AppConstants.spaceMD),
+              // Tap to view
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('View ticket', style: AppTypography.caption.copyWith(color: AppColors.teal, fontWeight: FontWeight.w500)),
+                  const SizedBox(width: 4),
+                  Icon(Icons.arrow_forward_ios_rounded, size: 10, color: AppColors.teal),
+                ],
               ),
             ],
           ),
