@@ -72,13 +72,23 @@ class ProfileScreen extends ConsumerWidget {
                               height: 72,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 2),
-                                color: Colors.white.withValues(alpha: 0.1),
+                                border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 2.5),
                               ),
-                              child: Center(
-                                child: Text(
-                                  data['name']!.split(' ').map((n) => n[0]).take(2).join(),
-                                  style: AppTypography.heading2.copyWith(color: Colors.white),
+                              child: ClipOval(
+                                child: Image.network(
+                                  'https://randomuser.me/api/portraits/men/32.jpg',
+                                  width: 72,
+                                  height: 72,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (_, __, ___) => Container(
+                                    color: AppColors.teal.withValues(alpha: 0.3),
+                                    child: Center(
+                                      child: Text(
+                                        data['name']!.split(' ').map((n) => n[0]).take(2).join(),
+                                        style: AppTypography.heading2.copyWith(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
