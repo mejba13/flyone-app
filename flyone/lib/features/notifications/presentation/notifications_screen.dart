@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_typography.dart';
+import '../../../core/theme/app_constants.dart';
 import '../../../core/widgets/skeleton_loader.dart';
 import '../domain/models/app_notification.dart';
 import '../domain/notification_provider.dart';
@@ -43,20 +44,13 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen>
         children: [
           Text(label),
           if (count > 0) ...[
-            const SizedBox(width: 6),
+            const SizedBox(width: AppConstants.spaceSM),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
-              decoration: BoxDecoration(
+              width: 6,
+              height: 6,
+              decoration: const BoxDecoration(
                 color: AppColors.teal,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Text(
-                '$count',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w700,
-                ),
+                shape: BoxShape.circle,
               ),
             ),
           ],
@@ -164,8 +158,8 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen>
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.deepPurple,
                     foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppConstants.radiusSmall)),
+                    padding: const EdgeInsets.symmetric(horizontal: AppConstants.spaceXXL, vertical: AppConstants.spaceMD),
                   ),
                   child: const Text('Explore Deals'),
                 ),

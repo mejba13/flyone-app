@@ -3,6 +3,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_typography.dart';
+import '../../../core/theme/app_constants.dart';
+import '../../../core/widgets/pill_button.dart';
 import '../data/mock_ticket_data.dart';
 import 'widgets/ticket_info_card.dart';
 import 'widgets/ticket_qr_code.dart';
@@ -94,11 +96,14 @@ class ETicketScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 32),
-            // Gradient download button
-            _GradientDownloadButton()
-                .animate()
-                .fadeIn(delay: 500.ms, duration: 300.ms),
-            const SizedBox(height: 32),
+            PillButton(
+              label: 'Download Ticket',
+              icon: Icons.download_rounded,
+              isOutlined: true,
+              onPressed: () {},
+              width: double.infinity,
+            ).animate().fadeIn(delay: 500.ms, duration: 300.ms),
+            const SizedBox(height: 80),
           ],
         ),
       ),
@@ -120,14 +125,8 @@ class _TicketCard extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: const [
-            BoxShadow(
-              color: AppColors.shadowColor,
-              blurRadius: 20,
-              offset: Offset(0, 6),
-            ),
-          ],
+          borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+          boxShadow: AppConstants.shadowSubtle,
         ),
         child: child,
       ),
@@ -142,7 +141,7 @@ class _TicketNotchPainter extends CustomPainter {
       ..color = AppColors.softWhite
       ..style = PaintingStyle.fill;
 
-    const notchRadius = 14.0;
+    const notchRadius = 12.0;
     // Position the notches roughly where the tear lines are (about 55% from top)
     final notchY = size.height * 0.55;
 
@@ -182,38 +181,3 @@ class _TicketTearLine extends StatelessWidget {
   }
 }
 
-class _GradientDownloadButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {},
-      child: Container(
-        width: double.infinity,
-        height: 54,
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [AppColors.teal, Color(0xFF3AADAD)],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ),
-          borderRadius: BorderRadius.circular(30),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.teal.withValues(alpha: 0.35),
-              blurRadius: 14,
-              offset: const Offset(0, 6),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.download_rounded, color: Colors.white, size: 20),
-            const SizedBox(width: 8),
-            Text('Download Ticket', style: AppTypography.button),
-          ],
-        ),
-      ),
-    );
-  }
-}
