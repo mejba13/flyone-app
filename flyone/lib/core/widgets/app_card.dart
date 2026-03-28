@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_constants.dart';
 
 class AppCard extends StatefulWidget {
   final Widget child;
@@ -30,9 +31,9 @@ class _AppCardState extends State<AppCard>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 100),
-      reverseDuration: const Duration(milliseconds: 180),
+      reverseDuration: const Duration(milliseconds: 200),
     );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.98).animate(
+    _scaleAnimation = Tween<double>(begin: 1.0, end: AppConstants.pressScale).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
   }
@@ -65,18 +66,11 @@ class _AppCardState extends State<AppCard>
       child: ScaleTransition(
         scale: _scaleAnimation,
         child: Container(
-          padding: widget.padding ?? const EdgeInsets.all(16),
+          padding: widget.padding ?? const EdgeInsets.all(AppConstants.spaceLG),
           decoration: BoxDecoration(
             color: widget.color ?? AppColors.cardBackground,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: const [
-              BoxShadow(
-                color: AppColors.shadowColor,
-                blurRadius: 12,
-                offset: Offset(0, 4),
-                spreadRadius: 0,
-              ),
-            ],
+            borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+            boxShadow: AppConstants.shadowSubtle,
           ),
           child: widget.child,
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_typography.dart';
+import '../theme/app_constants.dart';
 
 class SectionHeader extends StatelessWidget {
   final String title;
@@ -15,7 +16,7 @@ class SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: AppConstants.spaceXL),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -24,8 +25,11 @@ class SectionHeader extends StatelessWidget {
             GestureDetector(
               onTap: onViewAll,
               child: Text(
-                'View All',
-                style: AppTypography.bodySmall.copyWith(color: AppColors.teal),
+                'VIEW ALL',
+                style: AppTypography.label.copyWith(
+                  color: AppColors.teal,
+                  letterSpacing: 0.8,
+                ),
               ),
             ),
         ],

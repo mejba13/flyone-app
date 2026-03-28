@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_typography.dart';
+import '../theme/app_constants.dart';
 
 enum ToastType { success, error, info }
 
@@ -84,19 +85,13 @@ class _ToastWidgetState extends State<_ToastWidget> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: _color.withValues(alpha: 0.2),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
-            ],
-            border: Border.all(color: _color.withValues(alpha: 0.3)),
+            borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+            boxShadow: AppConstants.shadowSubtle,
+            border: Border.all(color: _color.withValues(alpha: 0.2)),
           ),
           child: Row(
             children: [
-              Icon(_icon, color: _color, size: 22),
+              Icon(_icon, color: _color, size: 18),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(widget.message, style: AppTypography.bodySmall.copyWith(color: AppColors.textPrimary)),
