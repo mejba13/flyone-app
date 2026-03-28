@@ -6,15 +6,17 @@ class AppTypography {
   AppTypography._();
 
   static TextStyle get heading1 => GoogleFonts.poppins(
-        fontSize: 28,
+        fontSize: 32,
         fontWeight: FontWeight.w700,
         color: AppColors.textPrimary,
+        letterSpacing: -0.5,
       );
 
   static TextStyle get heading2 => GoogleFonts.poppins(
         fontSize: 22,
         fontWeight: FontWeight.w600,
         color: AppColors.textPrimary,
+        letterSpacing: -0.3,
       );
 
   static TextStyle get heading3 => GoogleFonts.poppins(
@@ -24,13 +26,13 @@ class AppTypography {
       );
 
   static TextStyle get body => GoogleFonts.inter(
-        fontSize: 16,
+        fontSize: 15,
         fontWeight: FontWeight.w400,
         color: AppColors.textPrimary,
       );
 
   static TextStyle get bodySmall => GoogleFonts.inter(
-        fontSize: 14,
+        fontSize: 13,
         fontWeight: FontWeight.w400,
         color: AppColors.textSecondary,
       );
@@ -39,16 +41,17 @@ class AppTypography {
         fontSize: 12,
         fontWeight: FontWeight.w400,
         color: AppColors.textSecondary,
+        letterSpacing: 0.2,
       );
 
   static TextStyle get button => GoogleFonts.poppins(
-        fontSize: 16,
+        fontSize: 15,
         fontWeight: FontWeight.w500,
         color: Colors.white,
       );
 
   static TextStyle get buttonSmall => GoogleFonts.poppins(
-        fontSize: 14,
+        fontSize: 13,
         fontWeight: FontWeight.w500,
         color: Colors.white,
       );
@@ -57,6 +60,6 @@ class AppTypography {
         fontSize: 11,
         fontWeight: FontWeight.w500,
         color: AppColors.textSecondary,
-        letterSpacing: 0.5,
+        letterSpacing: 0.8,
       );
 }

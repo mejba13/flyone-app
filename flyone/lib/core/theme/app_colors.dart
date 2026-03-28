@@ -18,8 +18,8 @@ class AppColors {
   static const Color success = Color(0xFF43A047);
   static const Color warning = Color(0xFFFFA726);
   static const Color badgeBackground = lightLilac;
-  static const Color shimmerBase = Color(0xFFE8E5F0);
-  static const Color shimmerHighlight = Color(0xFFF3F0FA);
+  static const Color shimmerBase = Color(0xFFEFECF5);
+  static const Color shimmerHighlight = Color(0xFFF8F6FC);
 
   // Additional semantic
   static const Color surfaceVariant = Color(0xFFF0EDFF);
@@ -28,9 +28,9 @@ class AppColors {
 
   // Gradients
   static const LinearGradient primaryGradient = LinearGradient(
-    colors: [lightLilac, teal],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
+    colors: [lightLilac, softWhite],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
   );
 
   static const LinearGradient darkGradient = LinearGradient(
@@ -40,7 +40,7 @@ class AppColors {
   );
 
   static const LinearGradient accentGradient = LinearGradient(
-    colors: [teal, Color(0xFF4DB8B8)],
+    colors: [teal, Color(0xB35BCFCF)], // teal at 0.7 opacity
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
