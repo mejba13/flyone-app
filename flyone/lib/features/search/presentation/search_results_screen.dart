@@ -188,7 +188,7 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen>
                     child: child,
                   ),
                   child: ListView.builder(
-                    padding: const EdgeInsets.only(bottom: 20),
+                    padding: const EdgeInsets.only(bottom: 80),
                     itemCount: data.length,
                     itemBuilder: (context, index) => RouteCard(
                       result: data[index],

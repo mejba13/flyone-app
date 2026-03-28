@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_constants.dart';
 import '../../../../core/theme/app_typography.dart';
 
 class FilterSortBar extends StatelessWidget {
@@ -43,19 +44,10 @@ class FilterSortBar extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
               decoration: BoxDecoration(
                 color: isActive ? AppColors.deepPurple : Colors.white,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
                 border: Border.all(
                   color: isActive ? AppColors.deepPurple : AppColors.divider,
                 ),
-                boxShadow: isActive
-                    ? [
-                        BoxShadow(
-                          color: AppColors.deepPurple.withValues(alpha: 0.25),
-                          blurRadius: 10,
-                          offset: const Offset(0, 3),
-                        ),
-                      ]
-                    : null,
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,

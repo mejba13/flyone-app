@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_constants.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/utils/transport_icon.dart';
 import '../../../../core/widgets/rating_stars.dart';
@@ -38,37 +39,19 @@ class _RouteCardState extends State<RouteCard> {
       },
       onTapCancel: () => setState(() => _pressed = false),
       child: AnimatedScale(
-        scale: _pressed ? 0.98 : 1.0,
+        scale: _pressed ? AppConstants.pressScale : 1.0,
         duration: const Duration(milliseconds: 120),
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: const [
-              BoxShadow(
-                  color: Colors.black12, blurRadius: 8, offset: Offset(0, 2)),
-            ],
+            borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+            boxShadow: AppConstants.shadowSubtle,
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: IntrinsicHeight(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Teal left border stripe
-                  Container(
-                    width: 4,
-                    decoration: const BoxDecoration(
-                      gradient: AppColors.accentGradient,
-                    ),
-                  ),
-                  // Card content
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: [
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
                           // Carrier row
                           Row(
                             children: [
@@ -228,35 +211,15 @@ class _RouteCardState extends State<RouteCard> {
                                   ),
                                 ),
                               const Spacer(),
-                              // Price tag with gradient background
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 14, vertical: 8),
-                                decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    colors: [
-                                      AppColors.deepPurple,
-                                      Color(0xFF4A3F7A),
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  '${widget.result.currency} ${widget.result.pricePerPax.toInt()}/pax',
-                                  style: AppTypography.buttonSmall
-                                      .copyWith(fontSize: 13),
+                              Text(
+                                '${widget.result.currency} ${widget.result.pricePerPax.toInt()}/pax',
+                                style: AppTypography.heading3.copyWith(
+                                  color: AppColors.deepPurple,
                                 ),
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              ],
             ),
           ),
         ),
