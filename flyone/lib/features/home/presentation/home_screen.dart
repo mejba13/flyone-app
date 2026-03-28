@@ -208,7 +208,7 @@ class HomeScreen extends ConsumerWidget {
                     .fadeIn(delay: 400.ms, duration: 400.ms),
 
                 const SizedBox(height: 32),
-                const SizedBox(height: 80),
+                const SizedBox(height: AppConstants.bottomNavClearance),
               ],
             ),
           ),

@@ -103,7 +103,7 @@ class ETicketScreen extends StatelessWidget {
               onPressed: () {},
               width: double.infinity,
             ).animate().fadeIn(delay: 500.ms, duration: 300.ms),
-            const SizedBox(height: 80),
+            const SizedBox(height: AppConstants.bottomNavClearance),
           ],
         ),
       ),

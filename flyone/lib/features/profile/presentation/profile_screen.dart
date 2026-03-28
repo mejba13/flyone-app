@@ -84,7 +84,7 @@ class ProfileScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 24),
             const SettingsList().animate().fadeIn(delay: 400.ms, duration: 300.ms),
-            const SizedBox(height: 80),
+            const SizedBox(height: AppConstants.bottomNavClearance),
           ],
         ),
       ),

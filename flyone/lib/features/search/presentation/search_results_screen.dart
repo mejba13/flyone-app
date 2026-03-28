@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_typography.dart';
+import '../../../core/theme/app_constants.dart';
 import '../../../core/utils/transport_icon.dart';
 import '../../../core/widgets/skeleton_loader.dart';
 import '../domain/search_provider.dart';
@@ -188,7 +189,7 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen>
                     child: child,
                   ),
                   child: ListView.builder(
-                    padding: const EdgeInsets.only(bottom: 80),
+                    padding: const EdgeInsets.only(bottom: AppConstants.bottomNavClearance),
                     itemCount: data.length,
                     itemBuilder: (context, index) => RouteCard(
                       result: data[index],

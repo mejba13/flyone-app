@@ -53,4 +53,7 @@ class AppConstants {
   static const double buttonHeight = 48.0;
   static const double buttonHeightSmall = 36.0;
   static const double iconButtonSize = 44.0;
+
+  // ── Layout ────────────────────────────────────────────────────
+  static const double bottomNavClearance = 80.0;
 }

@@ -284,7 +284,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen>
             const SizedBox(height: 12),
             VoucherCarousel(vouchers: vouchers),
             const SizedBox(height: 32),
-            const SizedBox(height: 80),
+            const SizedBox(height: AppConstants.bottomNavClearance),
           ],
         ),
       ),

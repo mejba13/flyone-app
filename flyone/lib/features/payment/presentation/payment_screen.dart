@@ -151,7 +151,7 @@ class PaymentScreen extends ConsumerWidget {
               },
               width: double.infinity,
             ).animate().fadeIn(delay: 700.ms, duration: 300.ms),
-            const SizedBox(height: 80),
+            const SizedBox(height: AppConstants.bottomNavClearance),
           ],
         ),
       ),

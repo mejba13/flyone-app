@@ -119,53 +119,33 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
             ).animate().fadeIn(duration: 300.ms),
 
             const SizedBox(height: AppConstants.spaceXXL),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text('PASSENGER DETAILS', style: AppTypography.label.copyWith(
-                color: AppColors.textSecondary,
-              )),
-            ),
+            const _SectionLabel('PASSENGER DETAILS'),
             const SizedBox(height: AppConstants.spaceLG),
             PassengerForm(
               nameController: _nameController,
               emailController: _emailController,
               phoneController: _phoneController,
-            ).animate().fadeIn(delay: 80.ms, duration: 300.ms),
+            ).animate().fadeIn(delay: (80 * 1).ms, duration: 300.ms),
 
             const SizedBox(height: AppConstants.spaceXXL),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text('SEAT SELECTION', style: AppTypography.label.copyWith(
-                color: AppColors.textSecondary,
-              )),
-            ),
+            const _SectionLabel('SEAT SELECTION'),
             const SizedBox(height: AppConstants.spaceLG),
             SeatSelection(
               seatMap: seatMap,
               selectedSeat: selectedSeat,
               onSeatSelected: (s) => ref.read(selectedSeatProvider.notifier).state = s,
-            ).animate().fadeIn(delay: 80.ms, duration: 300.ms),
+            ).animate().fadeIn(delay: (80 * 2).ms, duration: 300.ms),
 
             const SizedBox(height: AppConstants.spaceXXL),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text('ADD-ONS', style: AppTypography.label.copyWith(
-                color: AppColors.textSecondary,
-              )),
-            ),
+            const _SectionLabel('ADD-ONS'),
             const SizedBox(height: AppConstants.spaceLG),
             AddonsSection(
               addons: addons,
               onToggle: (id) => ref.read(addonsProvider.notifier).toggle(id),
-            ).animate().fadeIn(delay: 80.ms, duration: 300.ms),
+            ).animate().fadeIn(delay: (80 * 3).ms, duration: 300.ms),
 
             const SizedBox(height: AppConstants.spaceXXL),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text('PROMO CODE', style: AppTypography.label.copyWith(
-                color: AppColors.textSecondary,
-              )),
-            ),
+            const _SectionLabel('PROMO CODE'),
             const SizedBox(height: AppConstants.spaceLG),
             PromoCodeField(
               controller: _promoController,
@@ -179,33 +159,43 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
                   ToastNotification.show(context, message: 'Invalid promo code', type: ToastType.error);
                 }
               },
-            ).animate().fadeIn(delay: 80.ms, duration: 300.ms),
+            ).animate().fadeIn(delay: (80 * 4).ms, duration: 300.ms),
 
             const SizedBox(height: AppConstants.spaceXXL),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text('PRICE SUMMARY', style: AppTypography.label.copyWith(
-                color: AppColors.textSecondary,
-              )),
-            ),
+            const _SectionLabel('PRICE SUMMARY'),
             const SizedBox(height: AppConstants.spaceLG),
             PriceBreakdown(
               basePrice: basePrice,
               addonsTotal: addonsTotal,
               discount: discount,
               passengers: 1,
-            ).animate().fadeIn(delay: 80.ms, duration: 300.ms),
+            ).animate().fadeIn(delay: (80 * 5).ms, duration: 300.ms),
 
             const SizedBox(height: AppConstants.spaceXXL),
             PillButton(
               label: 'Continue to Payment',
               onPressed: () => context.push('/payment'),
               width: double.infinity,
-            ).animate().fadeIn(delay: 80.ms, duration: 300.ms),
-            const SizedBox(height: 80),
+            ).animate().fadeIn(delay: (80 * 6).ms, duration: 300.ms),
+            const SizedBox(height: AppConstants.bottomNavClearance),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _SectionLabel extends StatelessWidget {
+  final String title;
+  const _SectionLabel(this.title);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Text(title, style: AppTypography.label.copyWith(
+        color: AppColors.textSecondary,
+      )),
     );
   }
 }

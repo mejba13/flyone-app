@@ -45,24 +45,18 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Logo container with shadow + gradient background
               Container(
+                width: 100,
+                height: 100,
                 decoration: BoxDecoration(
+                  gradient: AppColors.primaryGradient,
                   borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
                   boxShadow: AppConstants.shadowElevated,
                 ),
-                child: Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    gradient: AppColors.primaryGradient,
-                    borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
-                  ),
-                  child: const Icon(
-                    Icons.flight_takeoff_rounded,
-                    size: 48,
-                    color: AppColors.deepPurple,
-                  ),
+                child: const Icon(
+                  Icons.flight_takeoff_rounded,
+                  size: 48,
+                  color: AppColors.deepPurple,
                 ),
               )
                   .animate()
