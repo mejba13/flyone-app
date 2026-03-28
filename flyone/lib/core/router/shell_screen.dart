@@ -16,6 +16,7 @@ class ShellScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: child,
       bottomNavigationBar: AppBottomNav(
         currentIndex: currentIndex,
